@@ -13,8 +13,6 @@ jobs:
     strategy:
       matrix:
         node-version: [14.x, 16.x]
-    env:
-      RUN_STEP: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && matrix.node-version == '16.x' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -38,20 +36,20 @@ jobs:
         run: npm run test:coverage
       - name: Upload code coverage
         uses: codecov/codecov-action@v3
-        if: ${{ env.RUN_STEP }}
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && matrix.node-version == '16.x'
       - name: Check vulnerabilities
         uses: snyk/actions/node@master
-        if: ${{ env.RUN_STEP }}
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && matrix.node-version == '16.x'
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       - name: License scan
         uses: fossas/fossa-action@main
-        if: ${{ env.RUN_STEP }}
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && matrix.node-version == '16.x'
         with:
           api-key: ${{ secrets.FOSSA_TOKEN }}
       - name: Code analysis
         uses: codacy/codacy-analysis-cli-action@master
-        if: ${{ env.RUN_STEP }}
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && matrix.node-version == '16.x'
         with:
           output: results.sarif
           format: sarif
@@ -59,13 +57,13 @@ jobs:
           max-allowed-issues: 2147483647
       - name: Upload code analysis results
         uses: github/codeql-action/upload-sarif@main
-        if: ${{ env.RUN_STEP }}
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && matrix.node-version == '16.x'
         with:
           sarif_file: results.sarif
 
   release:
     needs: ci
-    if: ${{ startsWith(github.ref, 'refs/tags/') }}
+    if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
