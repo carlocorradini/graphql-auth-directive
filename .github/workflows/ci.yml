@@ -3,7 +3,7 @@ name: ci
 on:
   push:
     branches: [main]
-    tags: ['v*.*.*']
+    tags: ["v*.*.*"]
   pull_request:
     branches: [main]
 
@@ -13,6 +13,8 @@ jobs:
     strategy:
       matrix:
         node-version: [14.x, 16.x]
+    env:
+      RUN_STEP: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && matrix.node-version == '16.x' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -36,34 +38,34 @@ jobs:
         run: npm run test:coverage
       - name: Upload code coverage
         uses: codecov/codecov-action@v3
-        if: matrix.node-version == '16.x'
+        if: ${{ env.RUN_STEP }}
       - name: Check vulnerabilities
         uses: snyk/actions/node@master
+        if: ${{ env.RUN_STEP }}
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        if: matrix.node-version == '16.x'
       - name: License scan
         uses: fossas/fossa-action@main
+        if: ${{ env.RUN_STEP }}
         with:
           api-key: ${{ secrets.FOSSA_TOKEN }}
-        if: matrix.node-version == '16.x'
       - name: Code analysis
         uses: codacy/codacy-analysis-cli-action@master
+        if: ${{ env.RUN_STEP }}
         with:
           output: results.sarif
           format: sarif
           gh-code-scanning-compat: true
           max-allowed-issues: 2147483647
-        if: matrix.node-version == '16.x'
       - name: Upload code analysis results
         uses: github/codeql-action/upload-sarif@main
+        if: ${{ env.RUN_STEP }}
         with:
           sarif_file: results.sarif
-        if: matrix.node-version == '16.x'
 
   release:
     needs: ci
-    if: startsWith(github.ref, 'refs/tags/')
+    if: $ {{ startsWith(github.ref, 'refs/tags/') }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -73,8 +75,8 @@ jobs:
       - name: Setup Node.js 16.x
         uses: actions/setup-node@v3
         with:
-          node-version: '16.x'
-          registry-url: 'https://registry.npmjs.org'
+          node-version: "16.x"
+          registry-url: "https://registry.npmjs.org"
       - name: Install dependencies
         run: npm ci
       - name: Build
