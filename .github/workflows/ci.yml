@@ -28,28 +28,38 @@ jobs:
           configFile: .commitlintrc
       - name: Install dependencies
         run: npm ci
-      - name: Checks
+      - name: Check
         run: npm run check
       - name: Build
         run: npm run build
       - name: Test
+        run: npm run test
+
+  integration:
+    needs: ci
+    if: needs.ci.result == 'success' && github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Setup Node.js 16.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+      - name: Install dependencies
+        run: npm ci
+      - name: Test coverage
         run: npm run test:coverage
       - name: Upload code coverage
         uses: codecov/codecov-action@v3
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && matrix.node-version == '16.x'
       - name: Check vulnerabilities
         uses: snyk/actions/node@master
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && matrix.node-version == '16.x'
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-      - name: License scan
-        uses: fossas/fossa-action@main
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && matrix.node-version == '16.x'
-        with:
-          api-key: ${{ secrets.FOSSA_TOKEN }}
       - name: Code analysis
         uses: codacy/codacy-analysis-cli-action@master
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && matrix.node-version == '16.x'
         with:
           output: results.sarif
           format: sarif
@@ -57,13 +67,16 @@ jobs:
           max-allowed-issues: 2147483647
       - name: Upload code analysis results
         uses: github/codeql-action/upload-sarif@main
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && matrix.node-version == '16.x'
         with:
           sarif_file: results.sarif
+      - name: License scan
+        uses: fossas/fossa-action@main
+        with:
+          api-key: ${{ secrets.FOSSA_TOKEN }}
 
   release:
-    needs: ci
-    if: startsWith(github.ref, 'refs/tags/')
+    needs: integration
+    if: needs.integration.result == 'success' && startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -77,12 +90,10 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
       - name: Install dependencies
         run: npm ci
-      - name: Build
-        run: npm run build
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          body: graphql-auth-directive ${{ env.RELEASE_VERSION }}
+          body: graphql-auth-directive ${{  github.ref_name }}
       - name: Publish
         run: npm publish
         env:

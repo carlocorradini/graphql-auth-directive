@@ -132,16 +132,16 @@ yarn add graphql-auth-directive
 
    // Build schema
    let schema = makeExecutableSchema({
-     typeDefs: [authDirective.typeDefs, typeDefs],
+     typeDefs: [authDirective.typeDefs, typeDefs], // Add typeDefs
      resolvers
    });
-   schema = authDirective.transformer(schema);
+   schema = authDirective.transformer(schema); // Transform schema
 
    // Build and start server
    const server = new ApolloServer({
      schema,
      context: () => {
-       /* TODO */
+       /* ... */
      }
    });
    server
@@ -188,78 +188,6 @@ type Subscription {
 }
 ```
 
-## Contributing
-
-I would love to see your contribution :heart:
-
-VSCode is natively supported and configured with recommended extensions and settings :tada:
-
-Before creating a pull request execute the following commands:
-
-```console
-npm run check && npm run fix && npm run test
-```
-
-### Setup
-
-> Install dependencies
-
-```console
-npm ci
-```
-
-### Build
-
-- Simple
-
-  ```console
-  npm run build
-  ```
-
-- Watch mode
-
-  ```console
-  npm run build:watch
-  ```
-
-- Clean
-
-  ```console
-  npm run build:clean
-  ```
-
-### Test
-
-- Simple
-
-  ```console
-  npm run test
-  ```
-
-- Watch mode
-
-  ```console
-  npm run test:watch
-  ```
-
-- Coverage
-
-  ```console
-  npm run test:coverage
-  ```
-
-### Check
-
-```console
-npm run check
-```
-
-### Fix
-
-```console
-npm run fix
-```
-
 ## Why another GraphQL Auth Directive?
 
 Similar libraries are unmaintained and use an old (and deprecated) version of [graphql-tools](https://the-guild.dev/graphql/tools).
@@ -274,6 +202,12 @@ Similar libraries:
 1. [graphql-auth-directives](https://github.com/grand-stack/graphql-auth-directives)
 
 1. [gql-auth-directives](https://github.com/Drakota/gql-auth-directives)
+
+## Contributing
+
+I would love to see your contribution :heart:
+
+See [CONTRIBUTING](CONTRIBUTING.md) guidelines.
 
 ## License
 
