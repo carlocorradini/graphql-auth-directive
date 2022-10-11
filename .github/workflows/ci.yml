@@ -39,8 +39,6 @@ jobs:
         if: matrix.node-version == '16.x'
       - name: Check vulnerabilities
         uses: snyk/actions/node@master
-        with:
-          command: monitor
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         if: matrix.node-version == '16.x'
