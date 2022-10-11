@@ -3,6 +3,7 @@
 [![ci](https://github.com/carlocorradini/graphql-auth-directive/actions/workflows/ci.yml/badge.svg)](https://github.com/carlocorradini/graphql-auth-directive/actions/workflows/ci.yml)
 [![codeql](https://github.com/carlocorradini/graphql-auth-directive/actions/workflows/codeql.yml/badge.svg)](https://github.com/carlocorradini/graphql-auth-directive/actions/workflows/codeql.yml)
 [![codecov](https://codecov.io/gh/carlocorradini/graphql-auth-directive/branch/main/graph/badge.svg?token=40X7S64UQI)](https://codecov.io/gh/carlocorradini/graphql-auth-directive)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fcarlocorradini%2Fgraphql-auth-directive.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fcarlocorradini%2Fgraphql-auth-directive?ref=badge_shield)
 
 GraphQL `@auth` directive that protects resources from unauthenticated and unauthorized access.
 
@@ -232,3 +233,6 @@ Similar libraries:
 
 This project is licensed under the [MIT](https://opensource.org/licenses/MIT) License. \
 See [LICENSE](LICENSE) file for details.
+
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fcarlocorradini%2Fgraphql-auth-directive.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fcarlocorradini%2Fgraphql-auth-directive?ref=badge_large)
