@@ -33,9 +33,11 @@ yarn add graphql-auth-directive
 
 ## Usage
 
-> For more examples see [examples](examples) directory.
+> For more examples see [examples](examples) directory
 
 1. Add `@auth` directive to schema:
+
+   > See [Positioning](#positioning) for allowed positions
 
    ```graphql
    # Authentication required
@@ -69,10 +71,13 @@ yarn add graphql-auth-directive
    @auth(roles = [ADMIN], permissions = [EDIT_POST])
 
    # ADMIN String role and EDIT_POST String permission required
-   @auth(roles = [ADMIN], permissions = [EDIT_POST])
+   @auth(roles = ["ADMIN"], permissions = ["EDIT_POST"])
    ```
 
 1. Create a custom `auth` function:
+
+   > Class based `auth` is also possible leveraging Dependency Injection (DI) mechanism. \
+   >  Create a class that implements `AuthFnClass<Context>` interface.
 
    ```ts
    import type { AuthFn } from 'graphql-auth-directive';
@@ -110,6 +115,9 @@ yarn add graphql-auth-directive
    ```
 
 1. Build `auth` directive and create `GraphQL` schema:
+
+   > To enable DI mechanism register your OCI Container when building the directive: \
+   >  `buildAuthDirective({ ..., container: MyContainer });`
 
    ```ts
    import { buildAuthDirective } from 'graphql-auth-directive';
@@ -156,7 +164,7 @@ yarn add graphql-auth-directive
 
 ### Positioning
 
-> `OBJECT | FIELD | FIELD_DEFINITION`
+> `on OBJECT | FIELD | FIELD_DEFINITION`
 
 ```graphql
 type Protected @auth {
@@ -184,17 +192,41 @@ type Subscription {
 
 I would love to see your contribution :heart:
 
+VSCode is natively supported and configured with recommended extensions and settings :tada:
+
+Before creating a pull request execute the following commands:
+
+```console
+npm run check && npm run fix && npm run test
+```
+
 ### Setup
 
-Install dependencies
+> Install dependencies
 
 ```console
 npm ci
 ```
 
-### VSCode
+### Build
 
-Supported and configured with recommended extensions and settings :tada:
+- Simple
+
+  ```console
+  npm run build
+  ```
+
+- Watch mode
+
+  ```console
+  npm run build:watch
+  ```
+
+- Clean
+
+  ```console
+  npm run build:clean
+  ```
 
 ### Test
 
@@ -216,6 +248,18 @@ Supported and configured with recommended extensions and settings :tada:
   npm run test:coverage
   ```
 
+### Check
+
+```console
+npm run check
+```
+
+### Fix
+
+```console
+npm run fix
+```
+
 ## Why another GraphQL Auth Directive?
 
 Similar libraries are unmaintained and use an old (and deprecated) version of [graphql-tools](https://the-guild.dev/graphql/tools).
@@ -235,3 +279,5 @@ Similar libraries:
 
 This project is licensed under the [MIT](https://opensource.org/licenses/MIT) License. \
 See [LICENSE](LICENSE) file for details.
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fcarlocorradini%2Fgraphql-auth-directive.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fcarlocorradini%2Fgraphql-auth-directive?ref=badge_large)
