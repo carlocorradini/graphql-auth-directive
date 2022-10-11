@@ -22,8 +22,7 @@
  * SOFTWARE.
  */
 
-import type { User } from './User';
-import type { Post } from './Post';
+import type { User, Post } from './types';
 import { UserPermissions } from './UserPermissions';
 import { UserRoles } from './UserRoles';
 

@@ -22,7 +22,6 @@
  * SOFTWARE.
  */
 
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { gql } from 'apollo-server';
 
 export const typeDefs = gql`
@@ -36,7 +35,7 @@ export const typeDefs = gql`
 
   type User {
     id: Int!
-    secret: Boolean! @auth(roles = [ADMIN])
+    secret: Boolean! @auth(roles: [ADMIN])
     roles: [UserRoles!]!
     permissions: [UserPermissions!]!
   }
@@ -49,11 +48,11 @@ export const typeDefs = gql`
 
   type Query {
     posts: [Post!]!
-    users: [User!]! @auth(roles = [ADMIN])
+    users: [User!]! @auth(roles: [ADMIN])
   }
 
   type Mutation {
     createPost(content: String!): Post! @auth
-    deletePost(id: Int!): Post @auth(roles = [ADMIN], permissions = [DELETE_POST])
+    deletePost(id: Int!): Post @auth(roles: [ADMIN], permissions: [DELETE_POST])
   }
 `;

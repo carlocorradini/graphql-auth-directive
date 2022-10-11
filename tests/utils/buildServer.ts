@@ -23,9 +23,13 @@
  */
 
 import { ApolloServer } from 'apollo-server';
-import { AuthDirective } from '../../src';
+import { AuthDirectiveArgs, buildAuthDirective } from '../../src';
 import { buildSchema } from './buildSchema';
+import { contextHelper } from './contextHelper';
 
-export function buildServer(authDirective: AuthDirective) {
-  return new ApolloServer({ schema: buildSchema(authDirective) });
+export function buildServer(args: AuthDirectiveArgs) {
+  return new ApolloServer({
+    schema: buildSchema(buildAuthDirective(args)),
+    context: contextHelper
+  });
 }

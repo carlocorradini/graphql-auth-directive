@@ -22,20 +22,31 @@
  * SOFTWARE.
  */
 
-import type {
-  AuthData,
-  AuthFnClass as IAuthFnClass,
-  ResolverData
-} from '../src';
-import type { Context } from './Context';
-import { authFn } from './authFn';
+import type { AuthFn } from '../../src';
+import type { Context } from './types';
 
-export class AuthFnClass implements IAuthFnClass<Context> {
-  // eslint-disable-next-line class-methods-use-this
-  public auth(
-    resolverData: ResolverData<Context>,
-    authData: AuthData
-  ): boolean | Promise<boolean> {
-    return authFn(resolverData, authData);
+export const authFn: AuthFn<Context> = (
+  { context: { user } },
+  { roles, permissions }
+) => {
+  if (!user) {
+    // No user
+    return false;
   }
-}
+
+  if (roles.length === 0 && permissions.length === 0) {
+    // Only authentication required
+    return true;
+  }
+
+  // Roles
+  const rolesMatch: boolean =
+    roles.length === 0 ? true : user.roles.some((role) => roles.includes(role));
+  // Permissions
+  const permissionsMatch: boolean =
+    permissions.length === 0
+      ? true
+      : user.permissions.some((permission) => permissions.includes(permission));
+  // Roles & Permissions
+  return rolesMatch && permissionsMatch;
+};

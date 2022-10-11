@@ -22,31 +22,53 @@
  * SOFTWARE.
  */
 
-import type { AuthFn } from '../src';
-import type { Context } from './Context';
+import { gql } from 'apollo-server';
 
-export const authFn: AuthFn<Context> = (
-  { context: { user } },
-  { roles, permissions }
-) => {
-  if (!user) {
-    // No user
-    return false;
+export const typeDefs = gql`
+  enum UserRoles {
+    ADMIN
   }
 
-  if (roles.length === 0 && permissions.length === 0) {
-    // Only authentication required
-    return true;
+  enum UserPermissions {
+    DELETE_POST
   }
 
-  // Roles
-  const rolesMatch: boolean =
-    roles.length === 0 ? true : user.roles.some((role) => roles.includes(role));
-  // Permissions
-  const permissionsMatch: boolean =
-    permissions.length === 0
-      ? true
-      : user.permissions.some((permission) => permissions.includes(permission));
-  // Roles & Permissions
-  return rolesMatch && permissionsMatch;
-};
+  type User {
+    id: Int!
+    roles: [UserRoles!]!
+    permissions: [UserPermissions!]!
+    protected: String! @auth
+  }
+
+  type ProtectedObject @auth {
+    unprotected: String!
+  }
+
+  input UnprotectedInput {
+    unprotected: String!
+  }
+
+  type Query {
+    unprotected: String!
+    protected: User! @auth
+    protectedField: User!
+    protectedObject: ProtectedObject!
+    unprotectedInput(data: UnprotectedInput!): String!
+  }
+
+  type Mutation {
+    unprotected: String!
+    protected: User! @auth
+    protectedField: User!
+    protectedObject: ProtectedObject!
+    unprotectedInput(data: UnprotectedInput!): String!
+  }
+
+  type Subscription {
+    unprotected: String!
+    protected: User! @auth
+    protectedField: User!
+    protectedObject: ProtectedObject!
+    unprotectedInput(data: UnprotectedInput!): String!
+  }
+`;

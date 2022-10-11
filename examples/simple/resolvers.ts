@@ -22,12 +22,35 @@
  * SOFTWARE.
  */
 
-import type { UserRoles } from './UserRoles';
-import type { UserPermissions } from './UserPermissions';
+import type { Context, Post } from './types';
+import { users, posts } from './data';
 
-export type User = {
-  id: number;
-  secret: boolean;
-  roles: UserRoles[];
-  permissions: UserPermissions[];
+export const resolvers = {
+  Query: {
+    posts: () => posts,
+    users: () => users
+  },
+  Mutation: {
+    createPost: (_: unknown, args: { content: string }, context: Context) => {
+      const newPost: Post = {
+        id: posts.length > 0 ? posts[posts.length - 1].id + 1 : 0,
+        content: args.content,
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        creatorId: context.user!.id
+      };
+      posts.push(newPost);
+      return newPost;
+    },
+    deletePost: (_: unknown, args: { id: number }) => {
+      const postIndex = posts.findIndex((p) => p.id === args.id);
+      let postDeleted: Post | null = null;
+
+      if (postIndex !== -1) {
+        postDeleted = posts[postIndex];
+        posts.splice(postIndex, 1);
+      }
+
+      return postDeleted;
+    }
+  }
 };

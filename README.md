@@ -44,34 +44,34 @@ yarn add graphql-auth-directive
    @auth
 
    # ADMIN Enum role required
-   @auth(roles = [ADMIN])
+   @auth(roles: [ADMIN])
 
    # ADMIN or MODERATOR Enum role required
-   @auth(roles = [ADMIN, MODERATOR])
+   @auth(roles: [ADMIN, MODERATOR])
 
    # "ADMIN" String role required
-   @auth(roles = ["ADMIN"])
+   @auth(roles: ["ADMIN"])
 
    # "ADMIN" or "MODERATOR" String role required
-   @auth(roles = ["ADMIN", "MODERATOR"])
+   @auth(roles: ["ADMIN", "MODERATOR"])
 
    # READ_POST Enum permission required
-   @auth(permissions = [READ_POST])
+   @auth(permissions: [READ_POST])
 
    # READ_POST or EDIT_POST Enum permission required
-   @auth(roles = [READ_POST, EDIT_POST])
+   @auth(roles: [READ_POST, EDIT_POST])
 
    # READ_POST String permission required
-   @auth(permissions = ["READ_POST"])
+   @auth(permissions: ["READ_POST"])
 
    # READ_POST or EDIT_POST String permission required
-   @auth(permissions = ["READ_POST", "EDIT_POST"])
+   @auth(permissions: ["READ_POST", "EDIT_POST"])
 
    # ADMIN Enum role and EDIT_POST Enum permission required
-   @auth(roles = [ADMIN], permissions = [EDIT_POST])
+   @auth(roles: [ADMIN], permissions: [EDIT_POST])
 
    # ADMIN String role and EDIT_POST String permission required
-   @auth(roles = ["ADMIN"], permissions = ["EDIT_POST"])
+   @auth(roles: ["ADMIN"], permissions: ["EDIT_POST"])
    ```
 
 1. Create a custom `auth` function:

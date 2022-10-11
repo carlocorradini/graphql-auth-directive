@@ -22,8 +22,17 @@
  * SOFTWARE.
  */
 
-import type { User } from './user';
+export enum UserRoles {
+  ADMIN = 'ADMIN'
+}
 
-export type Context = {
-  user?: Omit<User, 'protected'>;
+export enum UserPermissions {
+  DELETE_POST = 'DELETE_POST'
+}
+
+export type User = {
+  id: number;
+  roles: UserRoles[];
+  permissions: UserPermissions[];
+  protected: string;
 };

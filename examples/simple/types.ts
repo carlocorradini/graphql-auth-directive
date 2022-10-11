@@ -28,3 +28,16 @@ import type { UserPermissions } from './UserPermissions';
 export type Context = {
   user?: { id: number; roles: UserRoles[]; permissions: UserPermissions[] };
 };
+
+export type User = {
+  id: number;
+  secret: boolean;
+  roles: UserRoles[];
+  permissions: UserPermissions[];
+};
+
+export type Post = {
+  id: number;
+  content: string;
+  creatorId: number;
+};

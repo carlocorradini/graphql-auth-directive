@@ -22,36 +22,30 @@
  * SOFTWARE.
  */
 
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { makeExecutableSchema } from '@graphql-tools/schema';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { ApolloServer } from 'apollo-server';
-import { buildAuthDirective } from '../src';
-import { typeDefs } from './typeDefs';
-import { resolvers } from './resolvers';
-import { authFn } from './authFn';
-import { contextHelper } from './contextHelper';
+import type { Context } from './Context';
 
-// Build auth directive
-const authDirective = buildAuthDirective({ auth: authFn });
+export const HELLO_WORLD = 'Hello World!';
 
-// Build schema
-let schema = makeExecutableSchema({
-  typeDefs: [authDirective.typeDefs, typeDefs],
-  resolvers
-});
-schema = authDirective.transformer(schema);
-
-// Build server
-const server = new ApolloServer({ schema, context: contextHelper });
-
-// Start server
-async function main() {
-  const serverInfo = await server.listen({
-    port: 8080,
-    host: '0.0.0.0'
-  });
-  // eslint-disable-next-line no-console
-  console.info(`Server started at ${serverInfo.url}`);
-}
-main();
+export const resolvers = {
+  Query: {
+    unprotected: () => HELLO_WORLD,
+    protected: (_: unknown, __: unknown, context: Context) => context.user,
+    protectedField: () => ({ protected: HELLO_WORLD }),
+    protectedObject: () => ({ unprotected: HELLO_WORLD }),
+    unprotectedInput: () => HELLO_WORLD
+  },
+  Mutation: {
+    unprotected: () => HELLO_WORLD,
+    protected: (_: unknown, __: unknown, context: Context) => context.user,
+    protectedField: () => ({ protected: HELLO_WORLD }),
+    protectedObject: () => ({ unprotected: HELLO_WORLD }),
+    unprotectedInput: () => HELLO_WORLD
+  },
+  Subscription: {
+    unprotected: () => HELLO_WORLD,
+    protected: (_: unknown, __: unknown, context: Context) => context.user,
+    protectedField: () => ({ protected: HELLO_WORLD }),
+    protectedObject: () => ({ unprotected: HELLO_WORLD }),
+    unprotectedInput: () => HELLO_WORLD
+  }
+};

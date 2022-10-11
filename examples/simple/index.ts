@@ -22,36 +22,39 @@
  * SOFTWARE.
  */
 
-import type { Context } from './Context';
-import type { Post } from './Post';
-import { users, posts } from './data';
+import { makeExecutableSchema } from '@graphql-tools/schema';
+import { ApolloServer } from 'apollo-server';
+import { buildAuthDirective } from '../../src';
+import { typeDefs } from './typeDefs';
+import { resolvers } from './resolvers';
+import { authFn } from './authFn';
+import { contextHelper } from './contextHelper';
 
-export const resolvers = {
-  Query: {
-    posts: () => posts,
-    users: () => users
-  },
-  Mutation: {
-    createPost: (_, args: { content: string }, context: Context) => {
-      const newPost: Post = {
-        id: posts.length > 0 ? posts[posts.length - 1].id + 1 : 0,
-        content: args.content,
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        creatorId: context.user!.id
-      };
-      posts.push(newPost);
-      return newPost;
-    },
-    deletePost: (_, args: { id: number }) => {
-      const postIndex = posts.findIndex((p) => p.id === args.id);
-      let postDeleted: Post | null = null;
+// Build auth directive
+const authDirective = buildAuthDirective({
+  auth: authFn,
+  roles: { typeName: 'UserRoles' },
+  permissions: { typeName: 'UserPermissions' }
+});
+// const authDirective = buildAuthDirective({ auth: authFnClass, ... });
 
-      if (postIndex !== -1) {
-        postDeleted = posts[postIndex];
-        posts.splice(postIndex, 1);
-      }
+// Build schema
+let schema = makeExecutableSchema({
+  typeDefs: [authDirective.typeDefs, typeDefs],
+  resolvers
+});
+schema = authDirective.transformer(schema);
 
-      return postDeleted;
-    }
-  }
-};
+// Build server
+const server = new ApolloServer({ schema, context: contextHelper });
+
+// Start server
+async function main() {
+  const serverInfo = await server.listen({
+    port: 8080,
+    host: '0.0.0.0'
+  });
+  // eslint-disable-next-line no-console
+  console.info(`Server started at ${serverInfo.url}`);
+}
+main();

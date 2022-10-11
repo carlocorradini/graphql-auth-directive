@@ -23,78 +23,15 @@
  */
 
 import { makeExecutableSchema } from '@graphql-tools/schema';
-import { gql } from 'apollo-server';
 import { AuthDirective } from '../../src';
-
-const HELLO_WORLD = 'Hello World!';
-
-const typeDefs = gql`
-  type ProtectedObject @auth {
-    unprotected: String!
-  }
-
-  type ProtectedField {
-    protected: String! @auth
-  }
-
-  input UnprotectedInput {
-    unprotected: String!
-  }
-
-  type Query {
-    unprotected: String!
-    protected: String! @auth
-    protectedField: ProtectedField!
-    protectedObject: ProtectedObject!
-    unprotectedInput(data: UnprotectedInput!): String!
-  }
-
-  type Mutation {
-    unprotected: String!
-    protected: String! @auth
-    protectedField: ProtectedField!
-    protectedObject: ProtectedObject!
-    unprotectedInput(data: UnprotectedInput!): String!
-  }
-
-  type Subscription {
-    unprotected: String!
-    protected: String! @auth
-    protectedField: ProtectedField!
-    protectedObject: ProtectedObject!
-    unprotectedInput(data: UnprotectedInput!): String!
-  }
-`;
-
-const resolvers = {
-  Query: {
-    unprotected: () => HELLO_WORLD,
-    protected: () => HELLO_WORLD,
-    protectedField: () => ({ protected: HELLO_WORLD }),
-    protectedObject: () => ({ unprotected: HELLO_WORLD }),
-    unprotectedInput: () => HELLO_WORLD
-  },
-  Mutation: {
-    unprotected: () => HELLO_WORLD,
-    protected: () => HELLO_WORLD,
-    protectedField: () => ({ protected: HELLO_WORLD }),
-    protectedObject: () => ({ unprotected: HELLO_WORLD }),
-    unprotectedInput: () => HELLO_WORLD
-  },
-  Subscription: {
-    unprotected: () => HELLO_WORLD,
-    protected: () => HELLO_WORLD,
-    protectedField: () => ({ protected: HELLO_WORLD }),
-    protectedObject: () => ({ unprotected: HELLO_WORLD }),
-    unprotectedInput: () => HELLO_WORLD
-  }
-};
+import { typeDefs } from './typeDefs';
+import { resolvers } from './resolvers';
 
 export function buildSchema(authDirective: AuthDirective) {
-  return authDirective.transformer(
-    makeExecutableSchema({
-      typeDefs: [authDirective.typeDefs, typeDefs],
-      resolvers
-    })
-  );
+  const schema = makeExecutableSchema({
+    typeDefs: [authDirective.typeDefs, typeDefs],
+    resolvers
+  });
+
+  return authDirective.transformer(schema);
 }

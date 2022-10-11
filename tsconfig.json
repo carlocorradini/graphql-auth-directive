@@ -1,13 +1,10 @@
 {
   "compilerOptions": {
-    "incremental": true,
     "target": "ES2015",
     "module": "CommonJS",
-    "rootDir": "src",
     "moduleResolution": "Node",
-    "baseUrl": ".",
     "paths": {
-      "~/*": ["src/*"]
+      "~/*": ["./src/*"]
     },
     "resolveJsonModule": true,
     "allowJs": false,
@@ -31,6 +28,6 @@
       }
     ]
   },
-  "include": ["src/**/*.ts"],
-  "exclude": ["node_modules/**/*", "build/**/*"]
+  "include": ["./src/**/*.ts"],
+  "exclude": ["./node_modules/**/*", "./build/**/*"]
 }

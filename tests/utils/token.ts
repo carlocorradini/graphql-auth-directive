@@ -22,8 +22,17 @@
  * SOFTWARE.
  */
 
-export type Post = {
-  id: number;
-  content: string;
-  creatorId: number;
-};
+import jwt from 'jsonwebtoken';
+import type { User } from './user';
+
+export type TokenPayload = Omit<User, 'protected'>;
+
+const SECRET = 'secret';
+
+export function sign(payload: TokenPayload) {
+  return jwt.sign(payload, SECRET);
+}
+
+export function verify(token: string) {
+  return jwt.verify(token, SECRET) as TokenPayload;
+}

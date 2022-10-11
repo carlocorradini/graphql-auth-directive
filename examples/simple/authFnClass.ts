@@ -22,8 +22,20 @@
  * SOFTWARE.
  */
 
-import type { User } from './user';
+import type {
+  AuthData,
+  AuthFnClass as IAuthFnClass,
+  ResolverData
+} from '../../src';
+import type { Context } from './types';
+import { authFn } from './authFn';
 
-export type Context = {
-  user?: Omit<User, 'protected'>;
-};
+export class AuthFnClass implements IAuthFnClass<Context> {
+  // eslint-disable-next-line class-methods-use-this
+  public auth(
+    resolverData: ResolverData<Context>,
+    authData: AuthData
+  ): boolean | Promise<boolean> {
+    return authFn(resolverData, authData);
+  }
+}
