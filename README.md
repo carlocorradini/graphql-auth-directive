@@ -14,7 +14,7 @@ Inspired by [TypeGraphQL](https://typegraphql.com) and [GraphQL Tools](https://t
 
 ## Installation
 
-> It's highly recommended to also install `@graphql-tools/schema`
+> It's highly recommended to install `@graphql-tools/schema`
 
 ### npm
 
