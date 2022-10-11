@@ -85,7 +85,7 @@ yarn add graphql-auth-directive
 
    export const authFn: AuthFn<Context> = (
      { context: { user } }, // Context
-     { roles, permissions } // Required @auth(roles: [...], permissions: [...])
+     { roles, permissions } // @auth(roles: [...], permissions: [...])
    ) => {
      if (!user) {
        // No user
