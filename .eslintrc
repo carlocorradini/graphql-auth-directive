@@ -52,7 +52,7 @@
   "rules": {
     "prettier/prettier": "error",
     "tsdoc/syntax": "warn",
-    "license-header/header": ["error", "license.js"],
+    "license-header/header": ["error", "resources/license.js"],
     "import/no-default-export": "error",
     "import/prefer-default-export": "off"
   }
