@@ -182,7 +182,7 @@ I would love to see your contribution :heart:
 
 ### Setup
 
-Installa dependencies
+Install dependencies
 
 ```console
 npm ci
@@ -215,7 +215,7 @@ Supported and configured with recommended extensions and settings :tada:
 ## Why another GraphQL Auth Directive?
 
 Similar libraries are unmaintained and use an old (and deprecated) version of [graphql-tools](https://the-guild.dev/graphql/tools).
-Moreorever this library tries to be as most modular as possible, giving the user the ability to configure the directive as much as possible.
+Moreover this library tries to be as most modular as possible, giving the user the ability to configure the directive as much as possible.
 
 Similar libraries:
 
@@ -223,7 +223,7 @@ Similar libraries:
 
 1. [graphql-directive-auth](https://github.com/graphql-community/graphql-directive-auth)
 
-1. [raphql-auth-directives](https://github.com/grand-stack/graphql-auth-directives)
+1. [graphql-auth-directives](https://github.com/grand-stack/graphql-auth-directives)
 
 1. [gql-auth-directives](https://github.com/Drakota/gql-auth-directives)
 

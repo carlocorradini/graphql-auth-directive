@@ -13,5 +13,5 @@
     "**/node_modules/",
     "license.json"
   ],
-  "words": ["corradini"]
+  "words": ["codeql", "commitlint", "corradini", "tada", "tsdoc"]
 }
