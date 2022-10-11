@@ -24,11 +24,11 @@
     "email": "carlo.corradini98@gmail.com",
     "url": "https://linkedin.com/in/carlo-corradini"
   },
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
   "files": [
     "build"
   ],
-  "main": "build/index.js",
-  "types": "build/index.d.ts",
   "scripts": {
     "build": "npx tsc --build tsconfig.json",
     "build:clean": "npx tsc --build --clean tsconfig.json",
@@ -94,6 +94,9 @@
   },
   "peerDependencies": {
     "graphql": "^15.3.0 || ^16.0.0"
+  },
+  "optionalDependencies": {
+    "fsevents": "^2.3.2"
   },
   "engines": {
     "node": ">= 13"
