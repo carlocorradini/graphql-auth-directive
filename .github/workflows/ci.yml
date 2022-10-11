@@ -40,4 +40,4 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           body: graphql-auth-directive ${{ env.RELEASE_VERSION }}
-        if: matrix.node-version == '16.x' && startsWith(github.ref, 'refs/tags/') &&
+        if: matrix.node-version == '16.x' && startsWith(github.ref, 'refs/tags/')
