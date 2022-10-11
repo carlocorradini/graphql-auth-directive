@@ -3,6 +3,9 @@
 [![ci](https://github.com/carlocorradini/graphql-auth-directive/actions/workflows/ci.yml/badge.svg)](https://github.com/carlocorradini/graphql-auth-directive/actions/workflows/ci.yml)
 [![codeql](https://github.com/carlocorradini/graphql-auth-directive/actions/workflows/codeql.yml/badge.svg)](https://github.com/carlocorradini/graphql-auth-directive/actions/workflows/codeql.yml)
 [![codecov](https://codecov.io/gh/carlocorradini/graphql-auth-directive/branch/main/graph/badge.svg?token=40X7S64UQI)](https://codecov.io/gh/carlocorradini/graphql-auth-directive)
+[![Snyk](https://snyk.io/test/github/carlocorradini/graphql-auth-directive/badge.svg)](https://snyk.io/test/github/carlocorradini/graphql-auth-directive)
+[![Codacy](https://app.codacy.com/project/badge/Grade/6e8bda1bf3b348f8b39de72499d01cc2)](https://www.codacy.com/gh/carlocorradini/graphql-auth-directive/dashboard?utm_source=github.com&utm_medium=referral&utm_content=carlocorradini/graphql-auth-directive&utm_campaign=Badge_Grade)
+[![FOSSA](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fcarlocorradini%2Fgraphql-auth-directive.svg?type=small)](https://app.fossa.com/projects/git%2Bgithub.com%2Fcarlocorradini%2Fgraphql-auth-directive?ref=badge_small)
 
 GraphQL `@auth` directive that protects resources from unauthenticated and unauthorized access.
 

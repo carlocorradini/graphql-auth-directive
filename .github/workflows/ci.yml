@@ -37,6 +37,31 @@ jobs:
       - name: Upload code coverage
         uses: codecov/codecov-action@v3
         if: matrix.node-version == '16.x'
+      - name: Check vulnerabilities
+        uses: snyk/actions/node@master
+        with:
+          command: monitor
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        if: matrix.node-version == '16.x'
+      - name: License scan
+        uses: fossas/fossa-action@main
+        with:
+          api-key: ${{ secrets.FOSSA_TOKEN }}
+        if: matrix.node-version == '16.x'
+      - name: Code analysis
+        uses: codacy/codacy-analysis-cli-action@master
+        with:
+          output: results.sarif
+          format: sarif
+          gh-code-scanning-compat: true
+          max-allowed-issues: 2147483647
+        if: matrix.node-version == '16.x'
+      - name: Upload code analysis results
+        uses: github/codeql-action/upload-sarif@main
+        with:
+          sarif_file: results.sarif
+        if: matrix.node-version == '16.x'
 
   release:
     needs: ci
