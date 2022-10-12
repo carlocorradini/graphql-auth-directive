@@ -22,27 +22,49 @@
  * SOFTWARE.
  */
 
-import type { User } from './User';
-import type { Post } from './Post';
-import { UserPermissions } from './UserPermissions';
+import { GraphQLInt } from 'graphql';
+import { Resolver, Query, Mutation, Arg, Ctx } from 'type-graphql';
+import { Post } from './Post';
+import { posts } from './data';
+import { Auth } from './Auth';
+import { Context } from './Context';
 import { UserRoles } from './UserRoles';
-import { sign } from './token';
+import { UserPermissions } from './UserPermissions';
 
-export const users: User[] = [
-  {
-    id: 0,
-    secret: true,
+@Resolver(Post)
+export class PostResolver {
+  @Query(() => [Post])
+  posts() {
+    return posts;
+  }
+
+  @Mutation(() => Post)
+  @Auth()
+  createPost(@Arg('content') content: string, @Ctx() context: Context) {
+    const newPost: Post = {
+      id: posts.length > 0 ? posts[posts.length - 1].id + 1 : 0,
+      content,
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      creatorId: context.user!.id
+    };
+    posts.push(newPost);
+    return newPost;
+  }
+
+  @Mutation(() => Post, { nullable: true })
+  @Auth({
     roles: [UserRoles.ADMIN],
     permissions: [UserPermissions.DELETE_POST]
-  },
-  {
-    id: 1,
-    secret: false,
-    roles: [],
-    permissions: []
+  })
+  deletePost(@Arg('id', () => GraphQLInt) id: number) {
+    const postIndex = posts.findIndex((p) => p.id === id);
+    let postDeleted: Post | null = null;
+
+    if (postIndex !== -1) {
+      postDeleted = posts[postIndex];
+      posts.splice(postIndex, 1);
+    }
+
+    return postDeleted;
   }
-];
-
-export const posts: Post[] = [{ id: 0, content: 'Hello World!', creatorId: 1 }];
-
-export const TOKEN = sign(users[0]);
+}

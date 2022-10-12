@@ -35,11 +35,13 @@ import type {
 import { AuthenticationError, AuthorizationError } from '~/errors';
 import { IOCContainer } from '~/utils';
 
-export function buildAuthDirective<TContext = Context>(
-  inArgs: AuthDirectiveArgs<TContext>
-) {
+export function buildAuthDirective<
+  TContext = Context,
+  TRole = string,
+  TPermission = string
+>(inArgs: AuthDirectiveArgs<TContext, TRole, TPermission>) {
   const opts: Required<
-    Omit<AuthDirectiveArgs<TContext>, 'container'> & {
+    Omit<AuthDirectiveArgs<TContext, TRole, TPermission>, 'container'> & {
       container: IOCContainer;
     }
   > = {
@@ -87,7 +89,10 @@ export function buildAuthDirective<TContext = Context>(
             typeDirectiveArgumentMaps[typeName];
 
           if (directive) {
-            const { roles, permissions }: Partial<AuthData> = directive;
+            const {
+              roles,
+              permissions
+            }: Partial<AuthData<TRole, TPermission>> = directive;
 
             if (roles && permissions) {
               const { resolve = defaultFieldResolver } = fieldConfig;
@@ -101,7 +106,10 @@ export function buildAuthDirective<TContext = Context>(
                   context,
                   info
                 };
-                const authData: AuthData = { roles, permissions };
+                const authData: AuthData<TRole, TPermission> = {
+                  roles,
+                  permissions
+                };
 
                 if (opts.auth.prototype) {
                   // Auth class
@@ -115,10 +123,9 @@ export function buildAuthDirective<TContext = Context>(
                   );
                 } else {
                   // Auth function
-                  accessGranted = await (opts.auth as AuthFn<TContext>)(
-                    resolverData,
-                    authData
-                  );
+                  accessGranted = await (
+                    opts.auth as AuthFn<TContext, TRole, TPermission>
+                  )(resolverData, authData);
                 }
 
                 if (!accessGranted) {

@@ -1,8 +1,11 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
+    "target": "ES2018",
     "declaration": false,
-    "declarationMap": false
+    "declarationMap": false,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   },
   "include": ["../src/**/*.ts", "./**/*.ts"]
 }

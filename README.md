@@ -17,8 +17,6 @@ Inspired by [TypeGraphQL](https://typegraphql.com) and [GraphQL Tools](https://t
 
 ## Installation
 
-> It's highly recommended to install `@graphql-tools/schema`
-
 ### npm
 
 ```console
@@ -33,7 +31,7 @@ yarn add graphql-auth-directive
 
 ## Usage
 
-> For more examples see [examples](examples) directory
+> See [examples](./examples) directory
 
 1. Add `@auth` directive to schema:
 
@@ -117,7 +115,10 @@ yarn add graphql-auth-directive
 1. Build `auth` directive and create `GraphQL` schema:
 
    > To enable DI mechanism register your OCI Container when building the directive: \
-   >  `buildAuthDirective({ ..., container: MyContainer });`
+   > `buildAuthDirective({ ..., container: MyContainer });`
+
+   <!-- markdownlint-disable-next-line MD027 -->
+   > It's highly recommended to install `@graphql-tools/schema`
 
    ```ts
    import { buildAuthDirective } from 'graphql-auth-directive';
@@ -188,6 +189,12 @@ type Subscription {
 }
 ```
 
+## Integrations
+
+### [TypeGraphQL](https://github.com/MichalLytek/type-graphql)
+
+See [typegraphql](./examples/typegraphql) example for more information.
+
 ## Why another GraphQL Auth Directive?
 
 Similar libraries are unmaintained and use an old (and deprecated) version of [graphql-tools](https://the-guild.dev/graphql/tools).
@@ -207,11 +214,11 @@ Similar libraries:
 
 I would love to see your contribution :heart:
 
-See [CONTRIBUTING](CONTRIBUTING.md) guidelines.
+See [CONTRIBUTING](./CONTRIBUTING.md) guidelines.
 
 ## License
 
 This project is licensed under the [MIT](https://opensource.org/licenses/MIT) License. \
-See [LICENSE](LICENSE) file for details.
+See [LICENSE](./LICENSE) file for details.
 
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fcarlocorradini%2Fgraphql-auth-directive.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fcarlocorradini%2Fgraphql-auth-directive?ref=badge_large)

@@ -22,13 +22,14 @@
  * SOFTWARE.
  */
 
+import jwt from 'jsonwebtoken';
 import type { ExpressContext } from 'apollo-server-express';
 import type { Context } from './Context';
-import { TokenPayload, verify } from './token';
+import type { User } from './User';
 import { AuthenticationError } from '../../src';
 
 export async function contextHelper({ req }: ExpressContext): Promise<Context> {
-  let user: TokenPayload | undefined;
+  let user: Omit<User, 'secret'> | undefined;
   const authorizationHeader =
     req.headers && 'Authorization' in req.headers
       ? 'Authorization'
@@ -45,8 +46,8 @@ export async function contextHelper({ req }: ExpressContext): Promise<Context> {
         const token = credentials;
 
         try {
-          const decodedToken = verify(token);
-          user = decodedToken;
+          const decodedToken = jwt.verify(token, 'secret', { complete: true });
+          user = decodedToken.payload as Omit<User, 'secret'>;
         } catch (error) {
           throw new AuthenticationError();
         }

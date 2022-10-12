@@ -26,7 +26,7 @@ import type { AuthData } from './AuthData';
 import type { ResolverData } from './ResolverData';
 import type { Context } from './Context';
 
-export type AuthFn<TContext = Context> = (
+export type AuthFn<TContext = Context, TRole = string, TPermission = string> = (
   resolverData: ResolverData<TContext>,
-  authData: AuthData
+  authData: AuthData<TRole, TPermission>
 ) => boolean | Promise<boolean>;

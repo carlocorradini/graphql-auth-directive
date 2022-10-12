@@ -26,9 +26,13 @@ import type { AuthData } from './AuthData';
 import type { ResolverData } from './ResolverData';
 import type { Context } from './Context';
 
-export interface AuthFnClass<TContext = Context> {
+export interface AuthFnClass<
+  TContext = Context,
+  TRole = string,
+  TPermission = string
+> {
   auth(
     resolverData: ResolverData<TContext>,
-    authData: AuthData
+    authData: AuthData<TRole, TPermission>
   ): boolean | Promise<boolean>;
 }

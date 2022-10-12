@@ -22,41 +22,8 @@
  * SOFTWARE.
  */
 
-import type { ExpressContext } from 'apollo-server-express';
-import type { Context } from './Context';
-import { TokenPayload, verify } from './token';
-import { AuthenticationError } from '../../src';
-
-export async function contextHelper({ req }: ExpressContext): Promise<Context> {
-  let user: TokenPayload | undefined;
-  const authorizationHeader =
-    req.headers && 'Authorization' in req.headers
-      ? 'Authorization'
-      : 'authorization';
-
-  if (req.headers && req.headers[authorizationHeader]) {
-    const parts = (req.headers[authorizationHeader] as string).split(' ');
-
-    if (parts.length === 2) {
-      const scheme = parts[0];
-      const credentials = parts[1];
-
-      if (/^Bearer$/i.test(scheme)) {
-        const token = credentials;
-
-        try {
-          const decodedToken = verify(token);
-          user = decodedToken;
-        } catch (error) {
-          throw new AuthenticationError();
-        }
-      }
-    } else {
-      throw new AuthenticationError(
-        "Token format is 'Authorization: Bearer [token]'"
-      );
-    }
-  }
-
-  return { user };
-}
+export type Post = {
+  id: number;
+  content: string;
+  creatorId: number;
+};

@@ -22,22 +22,17 @@
  * SOFTWARE.
  */
 
-import type { UserRoles } from './UserRoles';
-import type { UserPermissions } from './UserPermissions';
+import { GraphQLInt } from 'graphql';
+import { ObjectType, Field } from 'type-graphql';
 
-export type Context = {
-  user?: { id: number; roles: UserRoles[]; permissions: UserPermissions[] };
-};
+@ObjectType()
+export class Post {
+  @Field(() => GraphQLInt)
+  id!: number;
 
-export type User = {
-  id: number;
-  secret: boolean;
-  roles: UserRoles[];
-  permissions: UserPermissions[];
-};
+  @Field()
+  content!: string;
 
-export type Post = {
-  id: number;
-  content: string;
-  creatorId: number;
-};
+  @Field(() => GraphQLInt)
+  creatorId!: number;
+}

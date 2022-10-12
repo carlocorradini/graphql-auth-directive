@@ -22,10 +22,9 @@
  * SOFTWARE.
  */
 
-import type { GraphQLSchema, GraphQLDirective } from 'graphql';
+import type { GraphQLSchema } from 'graphql';
 
 export type AuthDirective = {
   typeDefs: string;
-  typeDefsObj: GraphQLDirective;
   transformer: (schema: GraphQLSchema) => GraphQLSchema;
 };

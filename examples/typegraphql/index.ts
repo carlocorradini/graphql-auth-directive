@@ -22,13 +22,15 @@
  * SOFTWARE.
  */
 
-import { makeExecutableSchema } from '@graphql-tools/schema';
+import 'reflect-metadata';
+import { mergeSchemas } from '@graphql-tools/schema';
 import { ApolloServer } from 'apollo-server';
+import { buildSchemaSync } from 'type-graphql';
 import { buildAuthDirective } from '../../src';
-import { typeDefs } from './typeDefs';
-import { resolvers } from './resolvers';
 import { authFn } from './authFn';
 import { contextHelper } from './contextHelper';
+import { UserResolver } from './UserResolver';
+import { PostResolver } from './PostResolver';
 import { TOKEN } from './data';
 import type { Context } from './Context';
 import type { UserRoles } from './UserRoles';
@@ -43,9 +45,12 @@ const authDirective = buildAuthDirective<Context, UserRoles, UserPermissions>({
 // const authDirective = buildAuthDirective({ auth: authFnClass, ... });
 
 // Build schema
-let schema = makeExecutableSchema({
-  typeDefs: [authDirective.typeDefs, typeDefs],
-  resolvers
+let schema = buildSchemaSync({
+  resolvers: [UserResolver, PostResolver]
+});
+schema = mergeSchemas({
+  schemas: [schema],
+  typeDefs: [authDirective.typeDefs]
 });
 schema = authDirective.transformer(schema);
 

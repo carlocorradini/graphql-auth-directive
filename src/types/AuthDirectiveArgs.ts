@@ -31,7 +31,11 @@ import type { Context } from './Context';
 /**
  * Auth directive arguments.
  */
-export type AuthDirectiveArgs<TContext = Context> = {
+export type AuthDirectiveArgs<
+  TContext = Context,
+  TRole = string,
+  TPermission = string
+> = {
   /**
    * Directive name.
    */
@@ -39,7 +43,7 @@ export type AuthDirectiveArgs<TContext = Context> = {
   /**
    * Auth function or class.
    */
-  auth: Auth<TContext>;
+  auth: Auth<TContext, TRole, TPermission>;
   /**
    * Auth mode.
    */

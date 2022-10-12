@@ -22,7 +22,8 @@
  * SOFTWARE.
  */
 
-import type { Context, Post } from './types';
+import type { Context } from './Context';
+import type { Post } from './Post';
 import { users, posts } from './data';
 
 export const resolvers = {
