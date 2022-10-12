@@ -31,6 +31,6 @@ export default <JestConfigWithTsJest>{
   testEnvironment: 'node',
   moduleNameMapper: pathsToModuleNameMapper(tsconfig.compilerOptions.paths),
   transform: {
-    '^.+\\.tsx?$': ['ts-jest', { tsconfig: 'tsconfig.test.json' }]
+    '^.+\\.tsx?$': ['ts-jest', { tsconfig: './tsconfig.test.json' }]
   }
 };

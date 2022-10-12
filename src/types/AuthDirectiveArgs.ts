@@ -83,7 +83,7 @@ export type AuthDirectiveArgs<
    */
   authorizationError?: ClassTypeEmptyConstructor<Error>;
   /**
-   * Dependency injection container.
+   * Dependency Injection container.
    */
   container?: ContainerType;
 };

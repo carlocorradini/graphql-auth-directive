@@ -24,7 +24,16 @@
 
 import type { GraphQLSchema } from 'graphql';
 
+/**
+ * Auth directive.
+ */
 export type AuthDirective = {
+  /**
+   * Type definitions.
+   */
   typeDefs: string;
+  /**
+   * Schema transformer.
+   */
   transformer: (schema: GraphQLSchema) => GraphQLSchema;
 };

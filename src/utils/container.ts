@@ -48,6 +48,9 @@ class DefaultContainer {
   }
 }
 
+/**
+ * IOC Container.
+ */
 export class IOCContainer {
   private readonly container: ContainerType | undefined;
 

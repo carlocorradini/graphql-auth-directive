@@ -52,11 +52,17 @@ type Opts<TContext, TRole, TPermission> = Required<
   };
 };
 
+/**
+ * Build auth directive.
+ *
+ * @param inArgs - Arguments.
+ * @returns Auth directive.
+ */
 export function buildAuthDirective<
   TContext = Context,
   TRole = string,
   TPermission = string
->(inArgs: AuthDirectiveArgs<TContext, TRole, TPermission>) {
+>(inArgs: AuthDirectiveArgs<TContext, TRole, TPermission>): AuthDirective {
   const opts: Opts<TContext, TRole, TPermission> = {
     name: inArgs.name ?? 'auth',
     auth: inArgs.auth,

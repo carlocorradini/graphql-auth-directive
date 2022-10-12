@@ -22,4 +22,7 @@
  * SOFTWARE.
  */
 
+/**
+ * Default context type.
+ */
 export type Context = Record<string, unknown>;

@@ -26,7 +26,16 @@ import type { AuthData } from './AuthData';
 import type { ResolverData } from './ResolverData';
 import type { Context } from './Context';
 
+/**
+ * Aut function.
+ */
 export type AuthFn<TContext = Context, TRole = string, TPermission = string> = (
+  /**
+   * Resolver data.
+   */
   resolverData: ResolverData<TContext>,
+  /**
+   * Auth data.
+   */
   authData: AuthData<TRole, TPermission>
 ) => boolean | Promise<boolean>;

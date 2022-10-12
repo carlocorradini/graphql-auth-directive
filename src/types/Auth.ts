@@ -27,6 +27,9 @@ import type { AuthFnClass } from './AuthFnClass';
 import type { ClassType } from './ClassType';
 import type { Context } from './Context';
 
+/**
+ * Auth function or class.
+ */
 export type Auth<TContext = Context, TRole = string, TPermission = string> =
   | AuthFn<TContext, TRole, TPermission>
   | ClassType<AuthFnClass<TContext, TRole, TPermission>>;

@@ -24,7 +24,16 @@
 
 import type { ResolverData } from './ResolverData';
 
+/**
+ * Dependency Injection container type interface.
+ */
 export interface ContainerType {
+  /**
+   * Return an instance of the given class type.
+   *
+   * @param someClass - Class type.
+   * @param resolverData - Resolver data.
+   */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   get(someClass: any, resolverData: ResolverData<any>): any | Promise<any>;
 }

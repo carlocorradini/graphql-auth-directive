@@ -22,9 +22,12 @@
  * SOFTWARE.
  */
 
+/**
+ * To array string arguments.
+ */
 export type ToArrayStringArgs<T> = {
   /**
-   * Value to flatten.
+   * Value.
    */
   value: T | T[];
   /**

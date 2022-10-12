@@ -22,7 +22,15 @@
  * SOFTWARE.
  */
 
+/**
+ * Authentication error.
+ */
 export class AuthenticationError extends Error {
+  /**
+   * Construct authentication error.
+   *
+   * @param message - Error message.
+   */
   public constructor(
     message = 'Access denied! You need to be authenticated to perform this action!'
   ) {

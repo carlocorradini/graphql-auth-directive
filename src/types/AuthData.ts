@@ -22,7 +22,16 @@
  * SOFTWARE.
  */
 
+/**
+ * Auth data.
+ */
 export type AuthData<TRole = string, TPermission = string> = {
+  /**
+   * Roles.
+   */
   roles: TRole[];
+  /**
+   * Permissions.
+   */
   permissions: TPermission[];
 };

@@ -25,6 +25,12 @@
 import type { ContainerType } from './ContainerType';
 import type { ResolverData } from './ResolverData';
 
+/**
+ * Container getter.
+ */
 export type ContainerGetter<TContext extends object> = (
+  /**
+   * Resolver data.
+   */
   resolverData: ResolverData<TContext>
 ) => ContainerType;

@@ -22,7 +22,15 @@
  * SOFTWARE.
  */
 
+/**
+ * Authorization error.
+ */
 export class AuthorizationError extends Error {
+  /**
+   *  Construct authorization error.
+   *
+   * @param message - Error message.
+   */
   public constructor(
     message = "Access denied! You don't have permission for this action!"
   ) {

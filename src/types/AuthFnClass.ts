@@ -26,11 +26,20 @@ import type { AuthData } from './AuthData';
 import type { ResolverData } from './ResolverData';
 import type { Context } from './Context';
 
+/**
+ * Auth class interface.
+ */
 export interface AuthFnClass<
   TContext = Context,
   TRole = string,
   TPermission = string
 > {
+  /**
+   * Auth function.
+   *
+   * @param resolverData - Resolver data.
+   * @param authData - Auth data.
+   */
   auth(
     resolverData: ResolverData<TContext>,
     authData: AuthData<TRole, TPermission>

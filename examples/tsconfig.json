@@ -4,6 +4,7 @@
     "target": "ES2018",
     "declaration": false,
     "declarationMap": false,
+    "removeComments": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   },

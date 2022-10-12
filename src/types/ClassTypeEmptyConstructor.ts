@@ -22,6 +22,9 @@
  * SOFTWARE.
  */
 
+/**
+ * Class type with an empty constructor.
+ */
 export type ClassTypeEmptyConstructor<T = unknown> = {
   new (): T;
 };

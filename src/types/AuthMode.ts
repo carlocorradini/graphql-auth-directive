@@ -22,4 +22,7 @@
  * SOFTWARE.
  */
 
+/**
+ * Auth mode.
+ */
 export type AuthMode = 'ERROR' | 'NULL';

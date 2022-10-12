@@ -11,7 +11,6 @@
     "declaration": true,
     "declarationMap": true,
     "outDir": "build",
-    "removeComments": true,
     "newLine": "lf",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,

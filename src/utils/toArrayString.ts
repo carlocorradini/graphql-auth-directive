@@ -24,6 +24,12 @@
 
 import type { ToArrayStringArgs } from '~/types';
 
+/**
+ * Transform input value as a string array.
+ *
+ * @param args - Arguments.
+ * @returns Array string.
+ */
 export function toArrayString<T>(args: ToArrayStringArgs<T>): string {
   // eslint-disable-next-line no-nested-ternary
   const array = !args.value

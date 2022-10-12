@@ -25,9 +25,24 @@
 import type { GraphQLResolveInfo } from 'graphql';
 import type { Context } from './Context';
 
+/**
+ * Resolver data.
+ */
 export type ResolverData<TContext = Context> = {
+  /**
+   * Source object.
+   */
   source: unknown;
+  /**
+   * Arguments provided to the field in the GraphQL query.
+   */
   args: Record<string, unknown>;
+  /**
+   * Context.
+   */
   context: TContext;
+  /**
+   * Field-specific information relevant to the current query.
+   */
   info: GraphQLResolveInfo;
 };
