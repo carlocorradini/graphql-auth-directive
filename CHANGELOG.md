@@ -1,6 +1,20 @@
+<!-- markdownlint-disable MD024 -->
+
 # Changelog and release notes
 
+## v0.3.1
+
+### Fixes
+
+- Comments are still available after compilation
+
+### Others
+
+- Added more comments
+
 ## v0.3.0
+
+### Features
 
 - **Breaking**: Renamed `typeName` to `enumName` in `roles` and `permissions` configurations
 
