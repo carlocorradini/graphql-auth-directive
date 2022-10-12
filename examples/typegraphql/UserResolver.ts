@@ -23,8 +23,8 @@
  */
 
 import { Resolver, Query } from 'type-graphql';
+import { users } from '../__commons';
 import { User } from './User';
-import { users } from './data';
 
 @Resolver(User)
 export class UserResolver {

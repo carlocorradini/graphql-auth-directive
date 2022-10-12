@@ -24,9 +24,10 @@
 
 import { GraphQLInt } from 'graphql';
 import { ObjectType, Field } from 'type-graphql';
+import type { Post as PostType } from '../__commons';
 
 @ObjectType()
-export class Post {
+export class Post implements PostType {
   @Field(() => GraphQLInt)
   id!: number;
 

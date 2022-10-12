@@ -23,16 +23,16 @@
  */
 
 import { makeExecutableSchema } from '@graphql-tools/schema';
-import { ApolloServer } from 'apollo-server';
 import { buildAuthDirective } from '../../src';
+import {
+  authFn,
+  Context,
+  UserRoles,
+  UserPermissions,
+  main
+} from '../__commons';
 import { typeDefs } from './typeDefs';
 import { resolvers } from './resolvers';
-import { authFn } from './authFn';
-import { contextHelper } from './contextHelper';
-import { TOKEN } from './data';
-import type { Context } from './Context';
-import type { UserRoles } from './UserRoles';
-import type { UserPermissions } from './UserPermissions';
 
 // Build auth directive
 const authDirective = buildAuthDirective<Context, UserRoles, UserPermissions>({
@@ -49,19 +49,5 @@ let schema = makeExecutableSchema({
 });
 schema = authDirective.transformer(schema);
 
-// Build server
-const server = new ApolloServer({ schema, context: contextHelper });
-
-// Start server
-async function main() {
-  const serverInfo = await server.listen({
-    port: 8080,
-    host: '0.0.0.0'
-  });
-
-  // eslint-disable-next-line no-console
-  console.info(`TOKEN: ${TOKEN}`);
-  // eslint-disable-next-line no-console
-  console.info(`Server started at ${serverInfo.url}`);
-}
-main();
+// Main
+main(schema);

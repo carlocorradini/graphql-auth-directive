@@ -24,12 +24,11 @@
 
 import { GraphQLInt } from 'graphql';
 import { ObjectType, Field } from 'type-graphql';
-import { UserRoles } from './UserRoles';
-import { UserPermissions } from './UserPermissions';
+import { User as UserType, UserRoles, UserPermissions } from '../__commons';
 import { Auth } from './Auth';
 
 @ObjectType()
-export class User {
+export class User implements UserType {
   @Field(() => GraphQLInt)
   id!: number;
 

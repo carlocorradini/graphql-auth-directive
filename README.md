@@ -33,49 +33,40 @@ yarn add graphql-auth-directive
 
 > See [examples](./examples) directory
 
-1. Add `@auth` directive to schema:
+1. Add `@auth` directive to *GraphQL* schema:
 
-   > See [Positioning](#positioning) for allowed positions
+   > `on OBJECT | FIELD | FIELD_DEFINITION`
 
    ```graphql
-   # Authentication required
-   @auth
+   type Example @auth {
+    unprotected: String!
+    adminProtected: String! @auth(roles: [ADMIN])
+   }
 
-   # ADMIN Enum role required
-   @auth(roles: [ADMIN])
+   type Query {
+    unprotected: String!
+    protected: String! @auth
+    adminRoleProtected: String! @auth(roles: [ADMIN])
+    adminOrModeratorRolesProtected: String! @auth(roles: [ADMIN, MODERATOR])
+    viewPermissionProtected: String! @auth(permissions: [VIEW])
+    viewOrEditPermissionsProtected: String! @auth(permissions: [VIEW, EDIT])
+    roleAndPermissionProtected: String! @auth(roles: [ADMIN], permissions: [VIEW])
+    # ...
+   }
 
-   # ADMIN or MODERATOR Enum role required
-   @auth(roles: [ADMIN, MODERATOR])
+   type Mutation {
+    # Same as Query
+   }
 
-   # "ADMIN" String role required
-   @auth(roles: ["ADMIN"])
-
-   # "ADMIN" or "MODERATOR" String role required
-   @auth(roles: ["ADMIN", "MODERATOR"])
-
-   # READ_POST Enum permission required
-   @auth(permissions: [READ_POST])
-
-   # READ_POST or EDIT_POST Enum permission required
-   @auth(roles: [READ_POST, EDIT_POST])
-
-   # READ_POST String permission required
-   @auth(permissions: ["READ_POST"])
-
-   # READ_POST or EDIT_POST String permission required
-   @auth(permissions: ["READ_POST", "EDIT_POST"])
-
-   # ADMIN Enum role and EDIT_POST Enum permission required
-   @auth(roles: [ADMIN], permissions: [EDIT_POST])
-
-   # ADMIN String role and EDIT_POST String permission required
-   @auth(roles: ["ADMIN"], permissions: ["EDIT_POST"])
+   type Subscription {
+    # Same as Query
+   }
    ```
 
-1. Create a custom `auth` function:
+1. Define a custom `auth` function:
 
    > Class based `auth` is also possible leveraging Dependency Injection (DI) mechanism. \
-   >  Create a class that implements `AuthFnClass<Context>` interface.
+   >  Define a class that implements `AuthFnClass<Context>` interface.
 
    ```ts
    import type { AuthFn } from 'graphql-auth-directive';
@@ -155,39 +146,13 @@ yarn add graphql-auth-directive
 | Name                  | Type                                           | Default Value                              | Description                                                                                                                                               |
 | --------------------- | ---------------------------------------------- | ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `name`                | `string`                                       | `auth`                                     | Directive name.                                                                                                                                           |
-| `auth`                | `Auth<TContext>`                               |                                            | Auth function (`AuthFn<TContext>`) or class (`AuthFnClass<TContext>`).                                                                                    |
+| `auth`                | `Auth<TContext, TRole, TPermission>`                               |                                            | Auth function (`AuthFn<TContext, TRole, TPermission>`) or class (`AuthFnClass<TContext, TRole, TPermission>`).                                                                                    |
 | `authMode`            | `'ERROR' \| 'NULL'`                            | `ERROR`                                    | Auth mode if access is not granted. `ERROR` throws an error. `NULL` returns `null`.                                                                       |
 | `roles`               | `{ typeName?: string, defaultValue?: string }` | `{ typeName: 'String', defaultValue: '' }` | Roles configuration. `typeName` is the type name of `roles` array. `defaultValue` is the default value, an empty value is equivalent to `[]`.             |
 | `permissions`         | `{ typeName?: string, defaultValue?: string }` | `{ typeName: 'String', defaultValue: '' }` | Permissions configuration. `typeName` is the type name of `permissions` array. `defaultValue` is the default value, an empty value is equivalent to `[]`. |
 | `authenticationError` | `ClassTypeEmptyConstructor<Error>`             | `AuthenticationError`                      | Authentication error class. An error class must extends `Error`.                                                                                          |
 | `authorizationError`  | `ClassTypeEmptyConstructor<Error>`             | `AuthorizationError`                       | Authorization error class. An error class must extends `Error`.                                                                                           |
 | `container`           | `ContainerType`                                | `IOCContainer`                             | Dependency injection container.                                                                                                                           |
-
-### Positioning
-
-> `on OBJECT | FIELD | FIELD_DEFINITION`
-
-```graphql
-type Protected @auth {
-  unprotected: String!
-}
-
-type ProtectedField {
-  protected: String! @auth
-}
-
-type Query {
-  protected: String! @auth
-}
-
-type Mutation {
-  protected: String! @auth
-}
-
-type Subscription {
-  protected: String! @auth
-}
-```
 
 ## Integrations
 

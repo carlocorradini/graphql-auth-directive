@@ -24,8 +24,7 @@
 
 import { Directive } from 'type-graphql';
 import type { AuthData } from '../../src';
-import type { UserRoles } from './UserRoles';
-import type { UserPermissions } from './UserPermissions';
+import type { UserRoles, UserPermissions } from '../__commons';
 
 type AuthArgs = {
   roles?: UserRoles | UserRoles[];

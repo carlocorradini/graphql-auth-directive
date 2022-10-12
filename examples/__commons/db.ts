@@ -22,42 +22,48 @@
  * SOFTWARE.
  */
 
-import jwt from 'jsonwebtoken';
-import type { ExpressContext } from 'apollo-server-express';
-import type { Context } from './Context';
 import type { User } from './User';
-import { AuthenticationError } from '../../src';
+import type { Post } from './Post';
+import { UserPermissions } from './UserPermissions';
+import { UserRoles } from './UserRoles';
 
-export async function contextHelper({ req }: ExpressContext): Promise<Context> {
-  let user: Omit<User, 'secret'> | undefined;
-  const authorizationHeader =
-    req.headers && 'Authorization' in req.headers
-      ? 'Authorization'
-      : 'authorization';
+export const SUPER_USER: User = {
+  id: 0,
+  secret: true,
+  roles: [UserRoles.ADMIN],
+  permissions: [UserPermissions.DELETE_POST]
+};
 
-  if (req.headers && req.headers[authorizationHeader]) {
-    const parts = (req.headers[authorizationHeader] as string).split(' ');
+export const users: User[] = [
+  SUPER_USER,
+  {
+    id: 1,
+    secret: false,
+    roles: [],
+    permissions: []
+  }
+];
 
-    if (parts.length === 2) {
-      const scheme = parts[0];
-      const credentials = parts[1];
+export const posts: Post[] = [{ id: 0, content: 'Hello World!', creatorId: 1 }];
 
-      if (/^Bearer$/i.test(scheme)) {
-        const token = credentials;
+export function addPost(content: string, creatorId: number): Post {
+  const newPost: Post = {
+    id: posts.length > 0 ? posts[posts.length - 1].id + 1 : 0,
+    content,
+    creatorId
+  };
+  posts.push(newPost);
+  return newPost;
+}
 
-        try {
-          const decodedToken = jwt.verify(token, 'secret', { complete: true });
-          user = decodedToken.payload as Omit<User, 'secret'>;
-        } catch (error) {
-          throw new AuthenticationError();
-        }
-      }
-    } else {
-      throw new AuthenticationError(
-        "Token format is 'Authorization: Bearer [token]'"
-      );
-    }
+export function removePost(id: number): Post | null {
+  const postIndex = posts.findIndex((p) => p.id === id);
+  let postDeleted: Post | null = null;
+
+  if (postIndex !== -1) {
+    postDeleted = posts[postIndex];
+    posts.splice(postIndex, 1);
   }
 
-  return { user };
+  return postDeleted;
 }

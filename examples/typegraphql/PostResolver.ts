@@ -24,12 +24,16 @@
 
 import { GraphQLInt } from 'graphql';
 import { Resolver, Query, Mutation, Arg, Ctx } from 'type-graphql';
+import {
+  posts,
+  addPost,
+  removePost,
+  Context,
+  UserRoles,
+  UserPermissions
+} from '../__commons';
 import { Post } from './Post';
-import { posts } from './data';
 import { Auth } from './Auth';
-import { Context } from './Context';
-import { UserRoles } from './UserRoles';
-import { UserPermissions } from './UserPermissions';
 
 @Resolver(Post)
 export class PostResolver {
@@ -41,14 +45,8 @@ export class PostResolver {
   @Mutation(() => Post)
   @Auth()
   createPost(@Arg('content') content: string, @Ctx() context: Context) {
-    const newPost: Post = {
-      id: posts.length > 0 ? posts[posts.length - 1].id + 1 : 0,
-      content,
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      creatorId: context.user!.id
-    };
-    posts.push(newPost);
-    return newPost;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return addPost(content, context.user!.id);
   }
 
   @Mutation(() => Post, { nullable: true })
@@ -57,14 +55,6 @@ export class PostResolver {
     permissions: [UserPermissions.DELETE_POST]
   })
   deletePost(@Arg('id', () => GraphQLInt) id: number) {
-    const postIndex = posts.findIndex((p) => p.id === id);
-    let postDeleted: Post | null = null;
-
-    if (postIndex !== -1) {
-      postDeleted = posts[postIndex];
-      posts.splice(postIndex, 1);
-    }
-
-    return postDeleted;
+    return removePost(id);
   }
 }

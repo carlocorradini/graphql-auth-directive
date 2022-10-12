@@ -22,24 +22,21 @@
  * SOFTWARE.
  */
 
-import type {
-  AuthData,
-  AuthFnClass as IAuthFnClass,
-  ResolverData
-} from '../../src';
-import type { Context } from './Context';
-import type { UserRoles } from './UserRoles';
-import type { UserPermissions } from './UserPermissions';
-import { authFn } from './authFn';
+import type { GraphQLSchema } from 'graphql';
+import { ApolloServer } from 'apollo-server';
+import { contextHelper } from './contextHelper';
+import { TOKEN } from './token';
 
-export class AuthFnClass
-  implements IAuthFnClass<Context, UserRoles, UserPermissions>
-{
-  // eslint-disable-next-line class-methods-use-this
-  public auth(
-    resolverData: ResolverData<Context>,
-    authData: AuthData<UserRoles, UserPermissions>
-  ): boolean | Promise<boolean> {
-    return authFn(resolverData, authData);
-  }
+export async function main(schema: GraphQLSchema) {
+  const server = new ApolloServer({ schema, context: contextHelper });
+
+  const serverInfo = await server.listen({
+    port: 8080,
+    host: '0.0.0.0'
+  });
+
+  // eslint-disable-next-line no-console
+  console.info(`TOKEN: ${TOKEN}`);
+  // eslint-disable-next-line no-console
+  console.info(`Server started at ${serverInfo.url}`);
 }

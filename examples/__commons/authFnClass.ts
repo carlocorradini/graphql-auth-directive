@@ -22,9 +22,23 @@
  * SOFTWARE.
  */
 
+import type {
+  AuthData,
+  AuthFnClass as IAuthFnClass,
+  ResolverData
+} from '../../src';
+import type { Context } from './Context';
 import type { UserRoles } from './UserRoles';
 import type { UserPermissions } from './UserPermissions';
+import { authFn } from './authFn';
 
-export type Context = {
-  user?: { id: number; roles: UserRoles[]; permissions: UserPermissions[] };
-};
+export class AuthFnClass
+  implements IAuthFnClass<Context, UserRoles, UserPermissions>
+{
+  public auth(
+    resolverData: ResolverData<Context>,
+    authData: AuthData<UserRoles, UserPermissions>
+  ): boolean | Promise<boolean> {
+    return authFn(resolverData, authData);
+  }
+}

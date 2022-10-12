@@ -22,9 +22,7 @@
  * SOFTWARE.
  */
 
-import type { Context } from './Context';
-import type { Post } from './Post';
-import { users, posts } from './data';
+import { users, posts, addPost, removePost, Context } from '../__commons';
 
 export const resolvers = {
   Query: {
@@ -32,26 +30,9 @@ export const resolvers = {
     users: () => users
   },
   Mutation: {
-    createPost: (_: unknown, args: { content: string }, context: Context) => {
-      const newPost: Post = {
-        id: posts.length > 0 ? posts[posts.length - 1].id + 1 : 0,
-        content: args.content,
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        creatorId: context.user!.id
-      };
-      posts.push(newPost);
-      return newPost;
-    },
-    deletePost: (_: unknown, args: { id: number }) => {
-      const postIndex = posts.findIndex((p) => p.id === args.id);
-      let postDeleted: Post | null = null;
-
-      if (postIndex !== -1) {
-        postDeleted = posts[postIndex];
-        posts.splice(postIndex, 1);
-      }
-
-      return postDeleted;
-    }
+    createPost: (_: unknown, args: { content: string }, context: Context) =>
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      addPost(args.content, context.user!.id),
+    deletePost: (_: unknown, args: { id: number }) => removePost(args.id)
   }
 };
