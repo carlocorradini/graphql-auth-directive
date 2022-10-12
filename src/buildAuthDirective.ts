@@ -64,7 +64,7 @@ export function buildAuthDirective<
 
   return <AuthDirective>{
     typeDefs: `
-    """Protect the resource from unauthenticated and unauthorized access."""
+      """Protect the resource from unauthenticated and unauthorized access."""
       directive @${opts.name}(
         """Allowed roles to access the resource."""
         roles: [${opts.roles.typeName}!]! = [${opts.roles.defaultValue}],
