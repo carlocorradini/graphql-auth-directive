@@ -8,13 +8,13 @@ Build examples:
 npx tsc --build tsconfig.json
 ```
 
-## Simple
+## [Simple](./simple)
 
 ```console
 node ../build/examples/simple/index.js
 ```
 
-## [TypeGraphQL](https://github.com/MichalLytek/type-graphql)
+## [TypeGraphQL](./typegraphql)
 
 ```console
 node ../build/examples/typegraphql/index.js

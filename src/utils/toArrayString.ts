@@ -22,42 +22,18 @@
  * SOFTWARE.
  */
 
-import 'reflect-metadata';
-import { mergeSchemas } from '@graphql-tools/schema';
-import { buildSchemaSync, registerEnumType } from 'type-graphql';
-import { buildAuthDirective } from '../../src';
-import {
-  authFn,
-  Context,
-  UserRoles,
-  UserPermissions,
-  main
-} from '../__commons';
-import { UserResolver } from './UserResolver';
-import { PostResolver } from './PostResolver';
+import type { ToArrayStringArgs } from '~/types';
 
-// Build auth directive
-const authDirective = buildAuthDirective<Context, UserRoles, UserPermissions>({
-  auth: authFn,
-  roles: { enumName: 'UserRoles' },
-  permissions: { enumName: 'UserPermissions' }
-});
-// const authDirective = buildAuthDirective({ auth: authFnClass, ... });
+export function toArrayString<T>(args: ToArrayStringArgs<T>): string {
+  // eslint-disable-next-line no-nested-ternary
+  const array = !args.value
+    ? [] // 'undefined' or 'null'
+    : Array.isArray(args.value)
+    ? args.value // Array
+    : [args.value]; // Value
+  const isEnum = args.isEnum ?? true;
 
-// Register UserRoles enum
-registerEnumType(UserRoles, { name: 'UserRoles' });
-// Register UserPermissions enum
-registerEnumType(UserPermissions, { name: 'UserPermission' });
-
-// Build schema
-let schema = buildSchemaSync({
-  resolvers: [UserResolver, PostResolver]
-});
-schema = mergeSchemas({
-  schemas: [schema],
-  typeDefs: [authDirective.typeDefs]
-});
-schema = authDirective.transformer(schema);
-
-// Main
-main(schema);
+  return `[${array
+    .map((value) => `${isEnum ? '' : '"'}${value}${isEnum ? '' : '"'}`)
+    .join(',')}]`;
+}

@@ -34,4 +34,5 @@ export * from './ClassTypeEmptyConstructor';
 export * from './ContainerGetter';
 export * from './ContainerType';
 export * from './Context';
+export * from './ToArrayStringArgs';
 export * from './ResolverData';

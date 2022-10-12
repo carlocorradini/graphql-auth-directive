@@ -37,8 +37,8 @@ import { resolvers } from './resolvers';
 // Build auth directive
 const authDirective = buildAuthDirective<Context, UserRoles, UserPermissions>({
   auth: authFn,
-  roles: { typeName: 'UserRoles' },
-  permissions: { typeName: 'UserPermissions' }
+  roles: { enumName: 'UserRoles' },
+  permissions: { enumName: 'UserPermissions' }
 });
 // const authDirective = buildAuthDirective({ auth: authFnClass, ... });
 

@@ -33,28 +33,47 @@ import type {
   AuthDirective
 } from '~/types';
 import { AuthenticationError, AuthorizationError } from '~/errors';
-import { IOCContainer } from '~/utils';
+import { IOCContainer, toArrayString } from '~/utils';
+
+type Opts<TContext, TRole, TPermission> = Required<
+  Omit<
+    AuthDirectiveArgs<TContext, TRole, TPermission>,
+    'container' | 'roles' | 'permissions'
+  >
+> & {
+  container: IOCContainer;
+  roles: {
+    type: string;
+    default: string;
+  };
+  permissions: {
+    type: string;
+    default: string;
+  };
+};
 
 export function buildAuthDirective<
   TContext = Context,
   TRole = string,
   TPermission = string
 >(inArgs: AuthDirectiveArgs<TContext, TRole, TPermission>) {
-  const opts: Required<
-    Omit<AuthDirectiveArgs<TContext, TRole, TPermission>, 'container'> & {
-      container: IOCContainer;
-    }
-  > = {
+  const opts: Opts<TContext, TRole, TPermission> = {
     name: inArgs.name ?? 'auth',
     auth: inArgs.auth,
     authMode: inArgs.authMode ?? 'ERROR',
     roles: {
-      typeName: inArgs.roles?.typeName ?? 'String',
-      defaultValue: inArgs?.roles?.defaultValue ?? ''
+      type: inArgs.roles?.enumName ?? 'String',
+      default: toArrayString({
+        value: inArgs.roles?.default,
+        isEnum: !!inArgs.roles?.enumName
+      })
     },
     permissions: {
-      typeName: inArgs.permissions?.typeName ?? 'String',
-      defaultValue: inArgs?.permissions?.defaultValue ?? ''
+      type: inArgs.permissions?.enumName ?? 'String',
+      default: toArrayString({
+        value: inArgs.permissions?.default,
+        isEnum: !!inArgs.permissions?.enumName
+      })
     },
     authenticationError: inArgs.authenticationError ?? AuthenticationError,
     authorizationError: inArgs.authorizationError ?? AuthorizationError,
@@ -67,11 +86,9 @@ export function buildAuthDirective<
       """Protect the resource from unauthenticated and unauthorized access."""
       directive @${opts.name}(
         """Allowed roles to access the resource."""
-        roles: [${opts.roles.typeName}!]! = [${opts.roles.defaultValue}],
+        roles: [${opts.roles.type}!]! = ${opts.roles.default},
         """Allowed permissions to access the resource."""
-        permissions: [${opts.permissions.typeName}!]! = [${
-      opts.permissions.defaultValue ?? ''
-    }],
+        permissions: [${opts.permissions.type}!]! = ${opts.permissions.default},
       ) on OBJECT | FIELD | FIELD_DEFINITION`,
     transformer: (schema: GraphQLSchema) =>
       mapSchema(schema, {

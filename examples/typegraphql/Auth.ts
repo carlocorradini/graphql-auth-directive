@@ -23,7 +23,7 @@
  */
 
 import { Directive } from 'type-graphql';
-import type { AuthData } from '../../src';
+import { AuthData, toArrayString } from '../../src';
 import type { UserRoles, UserPermissions } from '../__commons';
 
 type AuthArgs = {
@@ -59,14 +59,16 @@ export function Auth(
       sdl += `(`;
 
       if (authData.roles.length > 0) {
-        sdl += `roles: [${authData.roles.join(',')}]`;
+        sdl += `roles: ${toArrayString({ value: authData.roles })}`;
       }
 
       if (authData.permissions.length > 0) {
         if (authData.roles.length > 0) {
           sdl += ', ';
         }
-        sdl += `permissions: [${authData.permissions.join(',')}]`;
+        sdl += `permissions: ${toArrayString({
+          value: authData.permissions
+        })}`;
       }
 
       sdl += `)`;

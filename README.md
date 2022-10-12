@@ -66,25 +66,22 @@ yarn add graphql-auth-directive
 1. Define a custom `auth` function:
 
    > Class based `auth` is also possible leveraging Dependency Injection (DI) mechanism. \
-   >  Define a class that implements `AuthFnClass<Context>` interface.
+   >  Define a class that implements `AuthFnClass<TContext, TRole, TPermission>` interface.
 
    ```ts
    import type { AuthFn } from 'graphql-auth-directive';
    import type { Context } from './Context'; // Your context type
+   import type { Roles, Permissions } from './User'; // Your roles and permissions enum
 
-   export const authFn: AuthFn<Context> = (
+   export const authFn: AuthFn<Context, Roles, Permissions> = (
      { context: { user } }, // Context
      { roles, permissions } // @auth(roles: [...], permissions: [...])
    ) => {
-     if (!user) {
-       // No user
-       return false;
-     }
+     // No user
+     if (!user) { return false; }
 
-     if (roles.length === 0 && permissions.length === 0) {
-       // Only authentication required
-       return true;
-     }
+     // Only authentication required
+     if (roles.length === 0 && permissions.length === 0) { return true; }
 
      // Roles
      const rolesMatch: boolean =
@@ -124,8 +121,8 @@ yarn add graphql-auth-directive
 
    // Build schema
    let schema = makeExecutableSchema({
-     typeDefs: [authDirective.typeDefs, typeDefs], // Add typeDefs
-     resolvers
+     typeDefs: [authDirective.typeDefs, typeDefs], // TypeDefs
+     resolvers // Resolvers
    });
    schema = authDirective.transformer(schema); // Transform schema
 
@@ -148,8 +145,8 @@ yarn add graphql-auth-directive
 | `name`                | `string`                                       | `auth`                                     | Directive name.                                                                                                                                           |
 | `auth`                | `Auth<TContext, TRole, TPermission>`                               |                                            | Auth function (`AuthFn<TContext, TRole, TPermission>`) or class (`AuthFnClass<TContext, TRole, TPermission>`).                                                                                    |
 | `authMode`            | `'ERROR' \| 'NULL'`                            | `ERROR`                                    | Auth mode if access is not granted. `ERROR` throws an error. `NULL` returns `null`.                                                                       |
-| `roles`               | `{ typeName?: string, defaultValue?: string }` | `{ typeName: 'String', defaultValue: '' }` | Roles configuration. `typeName` is the type name of `roles` array. `defaultValue` is the default value, an empty value is equivalent to `[]`.             |
-| `permissions`         | `{ typeName?: string, defaultValue?: string }` | `{ typeName: 'String', defaultValue: '' }` | Permissions configuration. `typeName` is the type name of `permissions` array. `defaultValue` is the default value, an empty value is equivalent to `[]`. |
+| `roles`               | `{ enumName?: string, default?: TRole \| TRole[] }` | `{ enumName: undefined, default: undefined }` | Roles configuration. `enumName` is the enum name for `roles` array type, default is `String`. `default` is the default value, default to `[]`.             |
+| `permissions`         | `{ enumName?: string, default?: TPermission \| TPermission[] }` | `{ enumName: undefined, default: undefined }` | Permissions configuration. `enumName` is the enum name for `permissions` array type, default is `String`. `default` is the default value, default to `[]`. |
 | `authenticationError` | `ClassTypeEmptyConstructor<Error>`             | `AuthenticationError`                      | Authentication error class. An error class must extends `Error`.                                                                                          |
 | `authorizationError`  | `ClassTypeEmptyConstructor<Error>`             | `AuthorizationError`                       | Authorization error class. An error class must extends `Error`.                                                                                           |
 | `container`           | `ContainerType`                                | `IOCContainer`                             | Dependency injection container.                                                                                                                           |

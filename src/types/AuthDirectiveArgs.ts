@@ -53,26 +53,26 @@ export type AuthDirectiveArgs<
    */
   roles?: {
     /**
-     * Type name.
+     * Enum name.
      */
-    typeName?: string;
+    enumName?: string;
     /**
      * Default value.
      */
-    defaultValue?: string;
+    default?: TRole | TRole[];
   };
   /**
    * Permissions configuration.
    */
   permissions?: {
     /**
-     * Type name.
+     * Enum name.
      */
-    typeName?: string;
+    enumName?: string;
     /**
      * Default value.
      */
-    defaultValue?: string;
+    default?: TRole | TRole[];
   };
   /**
    * Authentication error class.
