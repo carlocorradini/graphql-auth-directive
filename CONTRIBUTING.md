@@ -7,7 +7,7 @@ VSCode is natively supported and configured with recommended extensions and sett
 Before creating a pull request execute the following commands:
 
 ```console
-npm run check && npm run fix && npm run test
+npm run fix && npm run check && npm run test
 ```
 
 ## Setup
