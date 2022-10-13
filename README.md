@@ -31,11 +31,11 @@ yarn add graphql-auth-directive
 
 ## Usage
 
-> See [examples](./examples) directory
+> **Note**: See [examples](./examples) directory
 
 1. Add `@auth` directive to *GraphQL* schema:
 
-   > `on OBJECT | FIELD | FIELD_DEFINITION`
+   > **Note**: `on OBJECT | FIELD | FIELD_DEFINITION`
 
    ```graphql
    type Example @auth {
@@ -65,8 +65,7 @@ yarn add graphql-auth-directive
 
 1. Define a custom `auth` function:
 
-   > Class based `auth` is also possible leveraging Dependency Injection (DI) mechanism. \
-   >  Define a class that implements `AuthFnClass<TContext, TRole, TPermission>` interface.
+   > **Note**: Class based `auth` is also possible leveraging Dependency Injection (DI) mechanism. Define a class that implements `AuthFnClass<TContext, TRole, TPermission>` interface.
 
    ```ts
    import type { AuthFn } from 'graphql-auth-directive';
@@ -102,11 +101,7 @@ yarn add graphql-auth-directive
 
 1. Build `auth` directive and create `GraphQL` schema:
 
-   > To enable DI mechanism register your OCI Container when building the directive: \
-   > `buildAuthDirective({ ..., container: MyContainer });`
-
-   <!-- markdownlint-disable-next-line MD027 -->
-   > It's highly recommended to install `@graphql-tools/schema`
+   > **Note**: To enable DI mechanism register your OCI Container when building the directive: `buildAuthDirective({ ..., container: MyContainer });`
 
    ```ts
    import { buildAuthDirective } from 'graphql-auth-directive';
