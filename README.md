@@ -130,7 +130,7 @@ yarn add graphql-auth-directive
 
 ### Options
 
-| Name                  | Type                                           | Default Value                              | Description                                                                                                                                               |
+| **Name**                  | **Type**                                           | **Default Value**                              | **Description**                                                                                                                                               |
 | --------------------- | ---------------------------------------------- | ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `name`                | `string`                                       | `auth`                                     | Directive name.                                                                                                                                           |
 | `auth`                | `Auth<TContext, TRole, TPermission>`                               |                                            | Auth function (`AuthFn<TContext, TRole, TPermission>`) or class (`AuthFnClass<TContext, TRole, TPermission>`).                                                                                    |
