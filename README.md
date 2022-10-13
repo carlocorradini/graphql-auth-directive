@@ -18,15 +18,9 @@ Inspired by [TypeGraphQL](https://typegraphql.com) and [GraphQL Tools](https://t
 
 ## Installation
 
-### npm
-
 ```console
 npm install graphql-auth-directive
-```
-
-### yarn
-
-```console
+# or
 yarn add graphql-auth-directive
 ```
 
