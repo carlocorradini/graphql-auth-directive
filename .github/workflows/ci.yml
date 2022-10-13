@@ -81,8 +81,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
       - name: Setup Node.js 16.x
         uses: actions/setup-node@v3
         with:
@@ -90,10 +88,19 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
       - name: Install dependencies
         run: npm ci
+      - name: Build Changelog
+        id: changelog
+        uses: mikepenz/release-changelog-builder-action@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          configuration: './.github/configs/changelog.json'
+          owner: carlocorradini
+          repo: graphql-auth-directive
+          failOnError: true
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          body: graphql-auth-directive ${{  github.ref_name }}
+          body: ${{ steps.changelog.outputs.changelog }}
       - name: Publish
         run: npm publish
         env:

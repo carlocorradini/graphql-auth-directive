@@ -1,41 +1,50 @@
 <!-- markdownlint-disable MD024 -->
 
-# Changelog and release notes
+# Changelog
 
-## v0.3.1
+All notable changes to this project will be documented in this file.
 
-### Fixes
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-- Comments are still available after compilation
+## [Unreleased]
 
-### Others
+## [v0.3.1](https://github.com/carlocorradini/graphql-auth-directive/releases/tag/v0.3.1) - 2022-10-13
+
+### Added
 
 - Added more comments
 
-## v0.3.0
+### Fixed
 
-### Features
+- Comments are still available after compilation
 
-- **Breaking**: Renamed `typeName` to `enumName` in `roles` and `permissions` configurations
+## [v0.3.0](https://github.com/carlocorradini/graphql-auth-directive/releases/tag/v0.3.0) - 2022-10-13
 
-- **Breaking**: Rename `defaultValue` to `default` in `roles` and `permissions` configurations
+### Added
 
 - `roles` and `permissions` configuration `default` value `TRole` value or `TRole` array
 
-## v0.2.0
+### Changed
 
-### Features
+- Renamed `typeName` to `enumName` in `roles` and `permissions` configurations
+
+- Rename `defaultValue` to `default` in `roles` and `permissions` configurations
+
+## [v0.2.0](https://github.com/carlocorradini/graphql-auth-directive/releases/tag/v0.2.0) - 2022-10-12
+
+### Added
 
 - Accept generics `TRole` and `TPermission` along with `TContext`
 
 - `TypeGraphQL` integration example
 
-## v0.1.1
+## [v0.1.1](https://github.com/carlocorradini/graphql-auth-directive/releases/tag/v0.1.1) - 2022-10-11
 
-### Fixes
+### Fixed
 
 - Typescript paths
 
-## v0.1.0
+## [v0.1.0](https://github.com/carlocorradini/graphql-auth-directive/releases/tag/v0.1.0) - 2022-10-11
 
-### Initial release
+- Initial release
