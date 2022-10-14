@@ -24,14 +24,13 @@
 
 import type { ExpressContext } from 'apollo-server-express';
 import type { Context } from './Context';
-import type { User } from './user';
-import { verify } from './token';
+import { verify, TokenPayload } from './token';
 import { AuthenticationError } from '../../src';
 
 export async function contextHelper({
   req
 }: Partial<ExpressContext>): Promise<Context> {
-  let user: Omit<User, 'protected'> | undefined;
+  let user: TokenPayload | undefined;
   const authorizationHeader =
     req?.headers && 'Authorization' in req.headers
       ? 'Authorization'

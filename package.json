@@ -46,8 +46,8 @@
     "fix:markdown": "npx markdownlint --fix \"**/*.md\"",
     "prepare": "npx ts-patch install -s && npx husky install",
     "prepublish": "npm run build:clean && npm run build",
-    "test": "npx jest",
-    "test:coverage": "npm run test -- --coverage",
+    "test": "npx jest --verbose --coverage",
+    "test:ci": "npm run test -- --ci --forceExit --detectOpenHandles --runInBand",
     "test:watch": "npm run test -- --watch"
   },
   "dependencies": {

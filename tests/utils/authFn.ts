@@ -24,8 +24,9 @@
 
 import type { AuthFn } from '../../src';
 import type { Context } from './Context';
+import type { UserRoles, UserPermissions } from './user';
 
-export const authFn: AuthFn<Context> = (
+export const authFn: AuthFn<Context, UserRoles, UserPermissions> = (
   { context: { user } },
   { roles, permissions }
 ) => {

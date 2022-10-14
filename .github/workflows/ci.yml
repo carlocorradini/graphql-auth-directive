@@ -33,7 +33,7 @@ jobs:
       - name: Build
         run: npm run build
       - name: Test
-        run: npm run test
+        run: npm run test:ci
 
   integration:
     needs: ci
@@ -50,8 +50,8 @@ jobs:
           node-version: '16.x'
       - name: Install dependencies
         run: npm ci
-      - name: Test coverage
-        run: npm run test:coverage
+      - name: Test
+        run: npm run test:ci
       - name: Upload code coverage
         uses: codecov/codecov-action@v3
       - name: Check vulnerabilities
