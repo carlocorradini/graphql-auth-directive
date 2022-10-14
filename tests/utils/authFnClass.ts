@@ -27,14 +27,17 @@ import type {
   AuthFnClass as IAuthFnClass,
   ResolverData
 } from '../../src';
+import type { UserRoles, UserPermissions } from './user';
 import { authFn } from './authFn';
 import { Context } from './Context';
 
-export class AuthFnClass implements IAuthFnClass<Context> {
+export class AuthFnClass
+  implements IAuthFnClass<Context, UserRoles, UserPermissions>
+{
   // eslint-disable-next-line class-methods-use-this
   public auth(
     resolverData: ResolverData<Context>,
-    authData: AuthData
+    authData: AuthData<UserRoles, UserPermissions>
   ): boolean | Promise<boolean> {
     return authFn(resolverData, authData);
   }

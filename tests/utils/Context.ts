@@ -22,8 +22,8 @@
  * SOFTWARE.
  */
 
-import type { User } from './user';
+import type { TokenPayload } from './token';
 
 export type Context = {
-  user?: Omit<User, 'protected'>;
+  user?: TokenPayload;
 };

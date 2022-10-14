@@ -27,8 +27,12 @@ import tsconfig from './tsconfig.json';
 
 export default <JestConfigWithTsJest>{
   preset: 'ts-jest',
-  roots: ['tests'],
+  verbose: false,
+  rootDir: './',
+  roots: ['<rootDir>/src', '<rootDir>/tests'],
   testEnvironment: 'node',
+  collectCoverage: false,
+  collectCoverageFrom: ['<rootDir>/src/**/*.ts', '!<rootDir>/src/**/*.d.ts'],
   moduleNameMapper: pathsToModuleNameMapper(tsconfig.compilerOptions.paths),
   transform: {
     '^.+\\.tsx?$': ['ts-jest', { tsconfig: './tsconfig.test.json' }]

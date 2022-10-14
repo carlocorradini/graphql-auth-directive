@@ -25,16 +25,16 @@
 import { ApolloServer } from 'apollo-server';
 import type { ExpressContext } from 'apollo-server-express';
 import {
-  User,
   AuthFnClass,
   buildServer,
   sign,
   AUTHENTICATION_ERROR_MESSAGE,
-  HELLO_WORLD
+  HELLO_WORLD,
+  TokenPayload
 } from './utils';
 
 describe('Authentication', () => {
-  const user: Omit<User, 'protected'> = { id: 0, roles: [], permissions: [] };
+  const user: TokenPayload = { id: 0, roles: [], permissions: [] };
   let server: ApolloServer;
   let context: ExpressContext;
 
