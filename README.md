@@ -92,6 +92,20 @@ yarn add graphql-auth-directive
      .then((serverInfo) => console.info(`Server started at ${serverInfo.url}`));
    ```
 
+   > **Warning**: [`defaultAuthFn`](./src/helpers/defaultAuthFn.ts) requires a context of the following type:
+
+   ```ts
+   {
+     user?: {
+       roles: string[] | number[];
+       permissions: string[] | number[];
+     };
+     /* ... */
+   }
+   ```
+
+   If `defaultAuthFn` does not match your configuration or you want more control, you can fully customize the `auth` procedure. See [Custom Auth procedure](#custom-auth-procedure) for more information.
+
 ### Options
 
 | **Name**                  | **Type**                                           | **Default Value**                              | **Description**                                                                                                                                               |
