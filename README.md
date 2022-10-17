@@ -58,56 +58,20 @@ yarn add graphql-auth-directive
    }
    ```
 
-1. Define a custom `auth` function:
-
-   > **Note**: Class based `auth` is also possible leveraging Dependency Injection (DI) mechanism. Define a class that implements `AuthFnClass<TContext, TRole, TPermission>` interface.
-
-   ```ts
-   import type { AuthFn } from 'graphql-auth-directive';
-   import type { Context } from './Context'; // Your context type
-   import type { Roles, Permissions } from './User'; // Your roles and permissions enum
-
-   export const authFn: AuthFn<Context, Roles, Permissions> = (
-     { context: { user } }, // Context
-     { roles, permissions } // @auth(roles: [...], permissions: [...])
-   ) => {
-     // No user
-     if (!user) { return false; }
-
-     // Only authentication required
-     if (roles.length === 0 && permissions.length === 0) { return true; }
-
-     // Roles
-     const rolesMatch: boolean =
-       roles.length === 0
-         ? true
-         : user.roles.some((role) => roles.includes(role));
-     // Permissions
-     const permissionsMatch: boolean =
-       permissions.length === 0
-         ? true
-         : user.permissions.some((permission) =>
-             permissions.includes(permission)
-           );
-     // Roles & Permissions
-     return rolesMatch && permissionsMatch;
-   };
-   ```
-
 1. Build `auth` directive and create `GraphQL` schema:
 
-   > **Note**: To enable DI mechanism register your OCI Container when building the directive: `buildAuthDirective({ ..., container: MyContainer });`
-
    ```ts
-   import { buildAuthDirective } from 'graphql-auth-directive';
+   import { buildAuthDirective, defaultAuthFn } from 'graphql-auth-directive';
    import { makeExecutableSchema } from '@graphql-tools/schema';
    import { ApolloServer } from 'apollo-server';
    import { typeDefs } from './typeDefs';
    import { resolvers } from './resolvers';
-   import { authFn } from './authFn';
 
    // Build auth directive
-   const authDirective = buildAuthDirective({ auth: authFn });
+   const authDirective = buildAuthDirective({
+     auth: defaultAuthFn // Auth procedure (default or custom)
+     // ... More options
+   });
 
    // Build schema
    let schema = makeExecutableSchema({
@@ -140,6 +104,56 @@ yarn add graphql-auth-directive
 | `authenticationError` | `ClassTypeEmptyConstructor<Error>`             | `AuthenticationError`                      | Authentication error class. An error class must extends `Error`.                                                                                          |
 | `authorizationError`  | `ClassTypeEmptyConstructor<Error>`             | `AuthorizationError`                       | Authorization error class. An error class must extends `Error`.                                                                                           |
 | `container`           | `ContainerType`                                | `IOCContainer`                             | Dependency injection container.                                                                                                                           |
+
+## Custom Auth procedure
+
+> **Warning**: `auth` must return `boolean` or `Promise<boolean>`, where `true` indicates that access has been granted and `false` that is denied
+
+You can fully customize the *auth* procedure by providing a function or class when building the directive.
+
+```ts
+import { buildAuthDirective } from 'graphql-auth-directive';
+import { myAuth } from './myAuth';
+
+// Build auth directive
+const authDirective = buildAuthDirective({
+  auth: myAuth // Custom auth procedure
+});
+```
+
+### [`AuthFn`](./src/types/AuthFn.ts) function
+
+```ts
+import type { AuthFn } from 'graphql-auth-directive';
+import type { Context } from './Context'; // Your context type
+import type { Roles, Permissions } from './User'; // Your roles and permissions enum
+
+export const myAuthFn: AuthFn<Context, Roles, Permissions> = (
+  { context: { user } }, // Context
+  { roles, permissions } // @auth(roles: [...], permissions: [...])
+) : boolean | Promise<boolean> => {
+  /* ... */
+};
+```
+
+### [`AuthFnClass`](./src/types/AuthFnClass.ts) class
+
+> **Note**: Class based `auth` can leverage Dependency Injection (DI) mechanism. To enable DI mechanism register your OCI Container when building the directive: `buildAuthDirective({ ..., container: MyContainer });`
+
+```ts
+import type { AuthFnClass } from 'graphql-auth-directive';
+import type { Context } from './Context'; // Your context type
+import type { Roles, Permissions } from './User'; // Your roles and permissions enum
+
+export class MyAuthFnClass implements AuthFnClass<Context, UserRoles, Permissions> {
+  public auth(
+    { context: { user } }, // Context
+    { roles, permissions } // @auth(roles: [...], permissions: [...])
+  ): boolean | Promise<boolean> {
+    /* ... */
+  }
+}
+```
 
 ## Integrations
 

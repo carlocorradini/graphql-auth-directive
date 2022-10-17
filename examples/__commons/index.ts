@@ -22,8 +22,6 @@
  * SOFTWARE.
  */
 
-export * from './authFn';
-export * from './authFnClass';
 export * from './Context';
 export * from './contextHelper';
 export * from './db';

@@ -23,12 +23,11 @@
  */
 
 import type { GraphQLResolveInfo } from 'graphql';
-import type { Context } from './Context';
 
 /**
  * Resolver data.
  */
-export type ResolverData<TContext = Context> = {
+export type ResolverData<TContext = Record<string, unknown>> = {
   /**
    * Source object.
    */

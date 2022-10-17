@@ -28,7 +28,6 @@ import type {
   AuthFn,
   AuthData,
   AuthDirectiveArgs,
-  Context,
   ResolverData,
   AuthDirective
 } from '~/types';
@@ -59,7 +58,7 @@ type Opts<TContext, TRole, TPermission> = Required<
  * @returns Auth directive.
  */
 export function buildAuthDirective<
-  TContext = Context,
+  TContext = Record<string, unknown>,
   TRole = string,
   TPermission = string
 >(inArgs: AuthDirectiveArgs<TContext, TRole, TPermission>): AuthDirective {

@@ -23,20 +23,14 @@
  */
 
 import { makeExecutableSchema } from '@graphql-tools/schema';
-import { buildAuthDirective } from '../../src';
-import {
-  authFn,
-  Context,
-  UserRoles,
-  UserPermissions,
-  main
-} from '../__commons';
+import { buildAuthDirective, defaultAuthFn } from '../../src';
+import { Context, UserRoles, UserPermissions, main } from '../__commons';
 import { typeDefs } from './typeDefs';
 import { resolvers } from './resolvers';
 
 // Build auth directive
 const authDirective = buildAuthDirective<Context, UserRoles, UserPermissions>({
-  auth: authFn,
+  auth: defaultAuthFn,
   roles: { enumName: 'UserRoles' },
   permissions: { enumName: 'UserPermissions' }
 });

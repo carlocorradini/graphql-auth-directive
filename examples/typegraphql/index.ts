@@ -25,20 +25,14 @@
 import 'reflect-metadata';
 import { makeExecutableSchema } from '@graphql-tools/schema';
 import { buildTypeDefsAndResolversSync, registerEnumType } from 'type-graphql';
-import { buildAuthDirective } from '../../src';
-import {
-  authFn,
-  Context,
-  UserRoles,
-  UserPermissions,
-  main
-} from '../__commons';
+import { buildAuthDirective, defaultAuthFn } from '../../src';
+import { Context, UserRoles, UserPermissions, main } from '../__commons';
 import { UserResolver } from './UserResolver';
 import { PostResolver } from './PostResolver';
 
 // Build auth directive
 const authDirective = buildAuthDirective<Context, UserRoles, UserPermissions>({
-  auth: authFn,
+  auth: defaultAuthFn,
   roles: { enumName: 'UserRoles' },
   permissions: { enumName: 'UserPermissions' }
 });

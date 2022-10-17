@@ -24,12 +24,15 @@
 
 import type { AuthData } from './AuthData';
 import type { ResolverData } from './ResolverData';
-import type { Context } from './Context';
 
 /**
  * Aut function.
  */
-export type AuthFn<TContext = Context, TRole = string, TPermission = string> = (
+export type AuthFn<
+  TContext = Record<string, unknown>,
+  TRole = string,
+  TPermission = string
+> = (
   /**
    * Resolver data.
    */
