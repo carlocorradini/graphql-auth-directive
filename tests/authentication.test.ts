@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-import { ApolloServer } from 'apollo-server';
+import type { ApolloServer } from 'apollo-server';
 import type { ExpressContext } from 'apollo-server-express';
 import { defaultAuthFn } from '../src';
 import {
