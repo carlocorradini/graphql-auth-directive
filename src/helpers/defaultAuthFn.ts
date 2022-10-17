@@ -26,8 +26,8 @@ import type { AuthFn } from '~/types';
 
 type DefaultContext = {
   user?: {
-    roles?: string[] | number[];
-    permissions?: string[] | number[];
+    roles: string[] | number[];
+    permissions: string[] | number[];
   };
 };
 
@@ -55,18 +55,12 @@ export const defaultAuthFn: AuthFn<
 
   // Roles
   const rolesMatch: boolean =
-    // eslint-disable-next-line no-nested-ternary
     roles.length === 0
       ? true // No roles required
-      : !user.roles
-      ? true // No roles in context
       : user.roles.some((role) => roles.includes(role));
   // Permissions
   const permissionsMatch: boolean =
-    // eslint-disable-next-line no-nested-ternary
     permissions.length === 0
-      ? true // No permissions required
-      : !user.permissions
       ? true // No permissions in context
       : user.permissions.some((permission) => permissions.includes(permission));
   // Roles & Permissions
