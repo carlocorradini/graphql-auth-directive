@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Removed source map for `.d.ts` files
+
 ## [v0.3.1](https://github.com/carlocorradini/graphql-auth-directive/releases/tag/v0.3.1) - 2022-10-13
 
 ### Added
