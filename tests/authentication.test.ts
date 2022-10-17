@@ -24,8 +24,8 @@
 
 import { ApolloServer } from 'apollo-server';
 import type { ExpressContext } from 'apollo-server-express';
+import { defaultAuthFn } from '../src';
 import {
-  AuthFnClass,
   buildServer,
   sign,
   AUTHENTICATION_ERROR_MESSAGE,
@@ -39,7 +39,7 @@ describe('Authentication', () => {
   let context: ExpressContext;
 
   beforeAll(() => {
-    server = buildServer({ auth: AuthFnClass });
+    server = buildServer({ auth: defaultAuthFn });
     context = {
       req: {
         headers: {

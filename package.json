@@ -32,6 +32,7 @@
   "scripts": {
     "build": "npx tsc --build tsconfig.json",
     "build:clean": "npx tsc --build --clean tsconfig.json",
+    "build:examples": "npx tsc --build examples/tsconfig.json",
     "build:watch": "npx tsc --build --watch tsconfig.json",
     "check": "npx npm-run-all --npm-path npm --serial check:*",
     "check:format": "npx prettier --check .",

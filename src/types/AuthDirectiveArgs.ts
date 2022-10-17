@@ -26,13 +26,12 @@ import type { Auth } from './Auth';
 import type { AuthMode } from './AuthMode';
 import { ClassTypeEmptyConstructor } from './ClassTypeEmptyConstructor';
 import type { ContainerType } from './ContainerType';
-import type { Context } from './Context';
 
 /**
  * Auth directive arguments.
  */
 export type AuthDirectiveArgs<
-  TContext = Context,
+  TContext = Record<string, unknown>,
   TRole = string,
   TPermission = string
 > = {

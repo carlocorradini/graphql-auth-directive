@@ -23,6 +23,7 @@
  */
 
 export * from './errors';
+export * from './helpers';
 export * from './types';
 export * from './utils';
 export * from './buildAuthDirective';

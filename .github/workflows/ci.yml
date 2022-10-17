@@ -32,6 +32,8 @@ jobs:
         run: npm run check
       - name: Build
         run: npm run build
+      - name: Build examples
+        run: npm run build:examples
       - name: Test
         run: npm run test:ci
 

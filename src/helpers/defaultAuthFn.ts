@@ -22,32 +22,52 @@
  * SOFTWARE.
  */
 
-import type { AuthFn } from '../../src';
-import type { Context } from './Context';
-import type { UserRoles } from './UserRoles';
-import type { UserPermissions } from './UserPermissions';
+import type { AuthFn } from '~/types';
 
-export const authFn: AuthFn<Context, UserRoles, UserPermissions> = (
-  { context: { user } },
-  { roles, permissions }
-) => {
+type DefaultContext = {
+  user?: {
+    roles?: string[] | number[];
+    permissions?: string[] | number[];
+  };
+};
+
+/**
+ * Default auth function.
+ *
+ * @param resolverData - Resolver data.
+ * @param authData - Auth data.
+ * @returns True if access is granted, false otherwise.
+ */
+export const defaultAuthFn: AuthFn<
+  DefaultContext,
+  string | number,
+  string | number
+> = ({ context: { user } }, { roles, permissions }) => {
+  // No user
   if (!user) {
-    // No user
     return false;
   }
 
+  // Only authentication required
   if (roles.length === 0 && permissions.length === 0) {
-    // Only authentication required
     return true;
   }
 
   // Roles
   const rolesMatch: boolean =
-    roles.length === 0 ? true : user.roles.some((role) => roles.includes(role));
+    // eslint-disable-next-line no-nested-ternary
+    roles.length === 0
+      ? true // No roles required
+      : !user.roles
+      ? true // No roles in context
+      : user.roles.some((role) => roles.includes(role));
   // Permissions
   const permissionsMatch: boolean =
+    // eslint-disable-next-line no-nested-ternary
     permissions.length === 0
-      ? true
+      ? true // No permissions required
+      : !user.permissions
+      ? true // No permissions in context
       : user.permissions.some((permission) => permissions.includes(permission));
   // Roles & Permissions
   return rolesMatch && permissionsMatch;
