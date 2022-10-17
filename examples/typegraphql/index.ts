@@ -23,8 +23,8 @@
  */
 
 import 'reflect-metadata';
-import { mergeSchemas } from '@graphql-tools/schema';
-import { buildSchemaSync, registerEnumType } from 'type-graphql';
+import { makeExecutableSchema } from '@graphql-tools/schema';
+import { buildTypeDefsAndResolversSync, registerEnumType } from 'type-graphql';
 import { buildAuthDirective } from '../../src';
 import {
   authFn,
@@ -50,14 +50,14 @@ registerEnumType(UserRoles, { name: 'UserRoles' });
 registerEnumType(UserPermissions, { name: 'UserPermission' });
 
 // Build schema
-let schema = buildSchemaSync({
+const { typeDefs, resolvers } = buildTypeDefsAndResolversSync({
   resolvers: [UserResolver, PostResolver]
 });
-schema = mergeSchemas({
-  schemas: [schema],
-  typeDefs: [authDirective.typeDefs]
+const executableSchema = makeExecutableSchema({
+  typeDefs: [authDirective.typeDefs, typeDefs],
+  resolvers
 });
-schema = authDirective.transformer(schema);
+const schema = authDirective.transformer(executableSchema);
 
 // Main
 main(schema);
