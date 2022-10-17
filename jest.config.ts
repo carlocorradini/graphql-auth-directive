@@ -30,6 +30,7 @@ export default <JestConfigWithTsJest>{
   verbose: false,
   rootDir: './',
   roots: ['<rootDir>/src', '<rootDir>/tests'],
+  setupFilesAfterEnv: ['<rootDir>/tests/jest.setup.ts'],
   testEnvironment: 'node',
   collectCoverage: false,
   collectCoverageFrom: ['<rootDir>/src/**/*.ts', '!<rootDir>/src/**/*.d.ts'],
