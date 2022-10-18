@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v0.4.1](https://github.com/carlocorradini/graphql-auth-directive/releases/tag/v0.4.1) - 2022-10-18
+
+### Fixed
+
+- Check context presence in `defaultAuthFn` procedure
+
 ## [v0.4.0](https://github.com/carlocorradini/graphql-auth-directive/releases/tag/v0.4.0) - 2022-10-18
 
 ### Added
