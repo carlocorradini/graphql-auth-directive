@@ -22,18 +22,6 @@
  * SOFTWARE.
  */
 
-import { ApolloServer } from 'apollo-server';
-import { AuthDirectiveArgs, buildAuthDirective } from '../../src';
-import type { Context } from './Context';
-import type { UserRoles, UserPermissions } from './user';
-import { buildSchema } from './buildSchema';
-import { contextHelper } from './contextHelper';
-
-export function buildServer(
-  args: AuthDirectiveArgs<Context, UserRoles, UserPermissions>
-) {
-  return new ApolloServer({
-    schema: buildSchema(buildAuthDirective(args)),
-    context: contextHelper
-  });
+export enum UserRoles {
+  ADMIN = 'ADMIN'
 }
