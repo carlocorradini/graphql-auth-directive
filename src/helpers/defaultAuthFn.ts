@@ -42,9 +42,9 @@ export const defaultAuthFn: AuthFn<
   DefaultContext,
   string | number,
   string | number
-> = ({ context: { user } }, { roles, permissions }) => {
+> = ({ context }, { roles, permissions }) => {
   // No user
-  if (!user) {
+  if (!context || !context.user) {
     return false;
   }
 
@@ -57,12 +57,14 @@ export const defaultAuthFn: AuthFn<
   const rolesMatch: boolean =
     roles.length === 0
       ? true // No roles required
-      : user.roles.some((role) => roles.includes(role));
+      : context.user.roles.some((role) => roles.includes(role));
   // Permissions
   const permissionsMatch: boolean =
     permissions.length === 0
       ? true // No permissions in context
-      : user.permissions.some((permission) => permissions.includes(permission));
+      : context.user.permissions.some((permission) =>
+          permissions.includes(permission)
+        );
   // Roles & Permissions
   return rolesMatch && permissionsMatch;
 };
