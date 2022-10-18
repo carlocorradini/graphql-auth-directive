@@ -106,7 +106,7 @@ yarn add graphql-auth-directive
 
    If `defaultAuthFn` does not match your configuration or you want more control, you can fully customize the `auth` procedure. See [Custom Auth procedure](#custom-auth-procedure) for more information.
 
-### Options
+## Options
 
 | **Name**                  | **Type**                                           | **Default Value**                              | **Description**                                                                                                                                               |
 | --------------------- | ---------------------------------------------- | ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
