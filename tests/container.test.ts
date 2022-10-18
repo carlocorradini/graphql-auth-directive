@@ -24,7 +24,7 @@
 
 /* eslint-disable max-classes-per-file */
 
-import type { ExpressContext } from 'apollo-server-express';
+import { graphql } from 'graphql';
 import { Container, Inject, Service } from 'typedi';
 import {
   AuthData,
@@ -33,7 +33,7 @@ import {
   defaultAuthFn,
   ContainerType
 } from '../src';
-import { buildServer, Context, sign, TokenPayload } from './utils';
+import { buildSchema, Context, UserContext } from './utils';
 
 @Service()
 class WaitService {
@@ -72,29 +72,19 @@ class Auth implements AuthFnClass {
 }
 
 describe('Container', () => {
-  const user: TokenPayload = { id: 0, roles: [], permissions: [] };
-  let context: ExpressContext;
+  const user: UserContext = { id: 0, roles: [], permissions: [] };
+  const context: Context = { user };
 
   beforeEach(() => {
     Container.reset();
   });
 
-  beforeAll(() => {
-    context = {
-      req: {
-        headers: {
-          authorization: `Bearer ${sign(user)}`
-        }
-      }
-    } as ExpressContext;
-  });
-
   it('should use default container to instantiate auth class', async () => {
-    const server = buildServer({ auth: Auth });
-    const result = await server.executeOperation(
-      {
-        query: 'query { protected { id, roles, permissions } }'
-      },
+    const schema = buildSchema({ auth: Auth });
+    const result = await graphql(
+      schema,
+      'query { protected { id, roles, permissions } }',
+      null,
       context
     );
 
@@ -103,11 +93,11 @@ describe('Container', () => {
   });
 
   it('should use provided container to load auth class', async () => {
-    const server = buildServer({ auth: AuthService, container: Container });
-    const result = await server.executeOperation(
-      {
-        query: 'query { protected { id, roles, permissions } }'
-      },
+    const schema = buildSchema({ auth: AuthService, container: Container });
+    const result = await graphql(
+      schema,
+      'query { protected { id, roles, permissions } }',
+      null,
       context
     );
 
@@ -116,21 +106,18 @@ describe('Container', () => {
   });
 
   it("should pass resolver's data to container's get", async () => {
-    let userContext: undefined | TokenPayload;
+    let userContext: undefined | UserContext;
     const container: ContainerType = {
       get(someClass, resolverData: ResolverData<Context>) {
         userContext = resolverData.context.user;
         return Container.get(someClass);
       }
     };
-    const server = buildServer({
-      auth: AuthService,
-      container
-    });
-    const result = await server.executeOperation(
-      {
-        query: 'query { protected { id, roles, permissions } }'
-      },
+    const schema = buildSchema({ auth: AuthService, container });
+    const result = await graphql(
+      schema,
+      'query { protected { id, roles, permissions } }',
+      null,
       context
     );
 
@@ -148,16 +135,14 @@ describe('Container', () => {
         return Container.get(someClass);
       }
     };
-
-    const server = buildServer({
+    const schema = buildSchema({
       auth: AuthService,
       container
     });
-
-    const result = await server.executeOperation(
-      {
-        query: 'query { protected { id, roles, permissions } }'
-      },
+    const result = await graphql(
+      schema,
+      'query { protected { id, roles, permissions } }',
+      null,
       context
     );
 

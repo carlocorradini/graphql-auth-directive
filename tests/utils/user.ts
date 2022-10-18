@@ -22,13 +22,8 @@
  * SOFTWARE.
  */
 
-export enum UserRoles {
-  ADMIN = 'ADMIN'
-}
-
-export enum UserPermissions {
-  DELETE_POST = 'DELETE_POST'
-}
+import type { UserRoles } from './UserRoles';
+import type { UserPermissions } from './UserPermissions';
 
 export type User = {
   id: number;

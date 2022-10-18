@@ -22,8 +22,8 @@
  * SOFTWARE.
  */
 
-import type { TokenPayload } from './token';
+import type { UserContext } from './UserContext';
 
 export type Context = {
-  user?: TokenPayload;
+  user?: UserContext;
 };

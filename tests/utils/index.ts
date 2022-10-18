@@ -23,11 +23,11 @@
  */
 
 export * from './buildSchema';
-export * from './buildServer';
 export * from './Context';
-export * from './contextHelper';
 export * from './errors';
 export * from './resolvers';
-export * from './token';
 export * from './typeDefs';
-export * from './user';
+export * from './User';
+export * from './UserContext';
+export * from './UserPermissions';
+export * from './UserRoles';

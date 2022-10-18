@@ -23,15 +23,20 @@
  */
 
 import { makeExecutableSchema } from '@graphql-tools/schema';
-import { AuthDirective } from '../../src';
+import { AuthDirectiveArgs, buildAuthDirective } from '../../src';
+import type { Context } from './Context';
+import type { UserRoles } from './UserRoles';
+import type { UserPermissions } from './UserPermissions';
 import { typeDefs } from './typeDefs';
 import { resolvers } from './resolvers';
 
-export function buildSchema(authDirective: AuthDirective) {
+export function buildSchema(
+  args: AuthDirectiveArgs<Context, UserRoles, UserPermissions>
+) {
+  const authDirective = buildAuthDirective(args);
   const schema = makeExecutableSchema({
     typeDefs: [authDirective.typeDefs, typeDefs],
     resolvers
   });
-
   return authDirective.transformer(schema);
 }

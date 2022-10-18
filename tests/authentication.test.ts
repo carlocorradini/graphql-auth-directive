@@ -22,66 +22,52 @@
  * SOFTWARE.
  */
 
-import type { ApolloServer } from 'apollo-server';
-import type { ExpressContext } from 'apollo-server-express';
+import { graphql, GraphQLSchema } from 'graphql';
 import { defaultAuthFn } from '../src';
 import {
-  buildServer,
-  sign,
   AUTHENTICATION_ERROR_MESSAGE,
   HELLO_WORLD,
-  TokenPayload
+  Context,
+  buildSchema,
+  UserContext
 } from './utils';
 
 describe('Authentication', () => {
-  const user: TokenPayload = { id: 0, roles: [], permissions: [] };
-  let server: ApolloServer;
-  let context: ExpressContext;
+  const user: UserContext = { id: 0, roles: [], permissions: [] };
+  const context: Context = { user };
+  let schema: GraphQLSchema;
 
   beforeAll(() => {
-    server = buildServer({ auth: defaultAuthFn });
-    context = {
-      req: {
-        headers: {
-          authorization: `Bearer ${sign(user)}`
-        }
-      }
-    } as ExpressContext;
+    schema = buildSchema({ auth: defaultAuthFn });
   });
 
   // Unprotected query|mutation|subscription
   it('should succeed executing an unprotected query when unauthenticated', async () => {
-    const result = await server.executeOperation({
-      query: 'query { unprotected }'
-    });
+    const result = await graphql(schema, 'query { unprotected }');
 
     expect(result.errors).toBeUndefined();
     expect(result.data?.unprotected).toBeDefined();
   });
 
   it('should succeed executing an unprotected mutation when unauthenticated', async () => {
-    const result = await server.executeOperation({
-      query: 'mutation { unprotected }'
-    });
+    const result = await graphql(schema, 'mutation { unprotected }');
 
     expect(result.errors).toBeUndefined();
     expect(result.data?.unprotected).toBeDefined();
   });
 
   it('should succeed executing an unprotected subscription when unauthenticated', async () => {
-    const result = await server.executeOperation({
-      query: 'subscription { unprotected }'
-    });
+    const result = await graphql(schema, 'subscription { unprotected }');
 
     expect(result.errors).toBeUndefined();
     expect(result.data?.unprotected).toBeDefined();
   });
 
   it('should succeed executing an unprotected query when authenticated', async () => {
-    const result = await server.executeOperation(
-      {
-        query: 'query { unprotected }'
-      },
+    const result = await graphql(
+      schema,
+      'query { unprotected }',
+      null,
       context
     );
 
@@ -90,10 +76,10 @@ describe('Authentication', () => {
   });
 
   it('should succeed executing an unprotected mutation when authenticated', async () => {
-    const result = await server.executeOperation(
-      {
-        query: 'mutation { unprotected }'
-      },
+    const result = await graphql(
+      schema,
+      'mutation { unprotected }',
+      null,
       context
     );
 
@@ -102,10 +88,10 @@ describe('Authentication', () => {
   });
 
   it('should succeed executing an unprotected subscription when authenticated', async () => {
-    const result = await server.executeOperation(
-      {
-        query: 'subscription { unprotected }'
-      },
+    const result = await graphql(
+      schema,
+      'subscription { unprotected }',
+      null,
       context
     );
 
@@ -115,9 +101,7 @@ describe('Authentication', () => {
 
   // Protected query|mutation|subscription
   it('should fail executing a protected query when unauthenticated', async () => {
-    const result = await server.executeOperation({
-      query: 'query { protected { id } }'
-    });
+    const result = await graphql(schema, 'query { protected { id } }');
 
     expect(result.data?.protected).toBeUndefined();
     expect(Array.isArray(result.errors)).toBeTruthy();
@@ -128,9 +112,7 @@ describe('Authentication', () => {
   });
 
   it('should fail executing a protected mutation when unauthenticated', async () => {
-    const result = await server.executeOperation({
-      query: 'mutation { protected { id } }'
-    });
+    const result = await graphql(schema, 'mutation { protected { id } }');
 
     expect(result.data?.protected).toBeUndefined();
     expect(Array.isArray(result.errors)).toBeTruthy();
@@ -141,9 +123,7 @@ describe('Authentication', () => {
   });
 
   it('should fail executing a protected subscription when unauthenticated', async () => {
-    const result = await server.executeOperation({
-      query: 'subscription { protected { id } }'
-    });
+    const result = await graphql(schema, 'subscription { protected { id } }');
 
     expect(result.data?.protected).toBeUndefined();
     expect(Array.isArray(result.errors)).toBeTruthy();
@@ -154,10 +134,10 @@ describe('Authentication', () => {
   });
 
   it('should succeed executing a protected query when authenticated', async () => {
-    const result = await server.executeOperation(
-      {
-        query: 'query { protected { id, roles, permissions } }'
-      },
+    const result = await graphql(
+      schema,
+      'query { protected { id, roles, permissions } }',
+      null,
       context
     );
 
@@ -166,10 +146,10 @@ describe('Authentication', () => {
   });
 
   it('should succeed executing a protected mutation when authenticated', async () => {
-    const result = await server.executeOperation(
-      {
-        query: 'mutation Protected { protected { id, roles, permissions } }'
-      },
+    const result = await graphql(
+      schema,
+      'mutation Protected { protected { id, roles, permissions } }',
+      null,
       context
     );
 
@@ -178,10 +158,10 @@ describe('Authentication', () => {
   });
 
   it('should succeed executing a protected subscription when authenticated', async () => {
-    const result = await server.executeOperation(
-      {
-        query: 'subscription { protected { id, roles, permissions } }'
-      },
+    const result = await graphql(
+      schema,
+      'subscription { protected { id, roles, permissions } }',
+      null,
       context
     );
 
@@ -191,9 +171,10 @@ describe('Authentication', () => {
 
   // Protected object field
   it('should fail executing an unprotected query and trying to access a protected object field when unauthenticated', async () => {
-    const result = await server.executeOperation({
-      query: 'query { protectedField { protected } }'
-    });
+    const result = await graphql(
+      schema,
+      'query { protectedField { protected } }'
+    );
 
     expect(result.data).toBeNull();
     expect(Array.isArray(result.errors)).toBeTruthy();
@@ -204,9 +185,10 @@ describe('Authentication', () => {
   });
 
   it('should fail executing an unprotected mutation and trying to access a protected object field when unauthenticated', async () => {
-    const result = await server.executeOperation({
-      query: 'mutation { protectedField { protected } }'
-    });
+    const result = await graphql(
+      schema,
+      'mutation { protectedField { protected } }'
+    );
 
     expect(result.data).toBeNull();
     expect(Array.isArray(result.errors)).toBeTruthy();
@@ -217,9 +199,10 @@ describe('Authentication', () => {
   });
 
   it('should fail executing an unprotected subscription and trying to access a protected object field when unauthenticated', async () => {
-    const result = await server.executeOperation({
-      query: 'subscription { protectedField { protected } }'
-    });
+    const result = await graphql(
+      schema,
+      'subscription { protectedField { protected } }'
+    );
 
     expect(result.data).toBeNull();
     expect(Array.isArray(result.errors)).toBeTruthy();
@@ -230,10 +213,10 @@ describe('Authentication', () => {
   });
 
   it('should succeed executing an unprotected query and trying to access a protected object field when authenticated', async () => {
-    const result = await server.executeOperation(
-      {
-        query: 'query { protectedField { protected } }'
-      },
+    const result = await graphql(
+      schema,
+      'query { protectedField { protected } }',
+      null,
       context
     );
 
@@ -242,10 +225,10 @@ describe('Authentication', () => {
   });
 
   it('should succeed executing an unprotected mutation and trying to access a protected object field when authenticated', async () => {
-    const result = await server.executeOperation(
-      {
-        query: 'mutation { protectedField { protected } }'
-      },
+    const result = await graphql(
+      schema,
+      'mutation { protectedField { protected } }',
+      null,
       context
     );
 
@@ -254,10 +237,10 @@ describe('Authentication', () => {
   });
 
   it('should succeed executing an unprotected subscription and trying to access a protected object field when authenticated', async () => {
-    const result = await server.executeOperation(
-      {
-        query: 'subscription { protectedField { protected } }'
-      },
+    const result = await graphql(
+      schema,
+      'subscription { protectedField { protected } }',
+      null,
       context
     );
 
@@ -267,9 +250,10 @@ describe('Authentication', () => {
 
   // Protected object
   it('should fail executing an unprotected query and trying to access a protected object when unauthenticated', async () => {
-    const result = await server.executeOperation({
-      query: 'query { protectedObject { unprotected } }'
-    });
+    const result = await graphql(
+      schema,
+      'query { protectedObject { unprotected } }'
+    );
 
     expect(result.data).toBeNull();
     expect(Array.isArray(result.errors)).toBeTruthy();
@@ -280,9 +264,10 @@ describe('Authentication', () => {
   });
 
   it('should fail executing an unprotected mutation and trying to access a protected object when unauthenticated', async () => {
-    const result = await server.executeOperation({
-      query: 'mutation { protectedObject { unprotected } }'
-    });
+    const result = await graphql(
+      schema,
+      'mutation { protectedObject { unprotected } }'
+    );
 
     expect(result.data).toBeNull();
     expect(Array.isArray(result.errors)).toBeTruthy();
@@ -293,9 +278,10 @@ describe('Authentication', () => {
   });
 
   it('should fail executing an unprotected subscription and trying to access a protected object when unauthenticated', async () => {
-    const result = await server.executeOperation({
-      query: 'subscription { protectedObject { unprotected } }'
-    });
+    const result = await graphql(
+      schema,
+      'subscription { protectedObject { unprotected } }'
+    );
 
     expect(result.data).toBeNull();
     expect(Array.isArray(result.errors)).toBeTruthy();
@@ -306,10 +292,10 @@ describe('Authentication', () => {
   });
 
   it('should succeed executing an unprotected query and trying to access a protected object when authenticated', async () => {
-    const result = await server.executeOperation(
-      {
-        query: 'query { protectedObject { unprotected } }'
-      },
+    const result = await graphql(
+      schema,
+      'query { protectedObject { unprotected } }',
+      null,
       context
     );
 
@@ -318,10 +304,10 @@ describe('Authentication', () => {
   });
 
   it('should succeed executing an unprotected mutation and trying to access a protected object when authenticated', async () => {
-    const result = await server.executeOperation(
-      {
-        query: 'mutation { protectedObject { unprotected } }'
-      },
+    const result = await graphql(
+      schema,
+      'mutation { protectedObject { unprotected } }',
+      null,
       context
     );
 
@@ -330,10 +316,10 @@ describe('Authentication', () => {
   });
 
   it('should succeed executing an unprotected subscription and trying to access a protected object when authenticated', async () => {
-    const result = await server.executeOperation(
-      {
-        query: 'subscription { protectedObject { unprotected } }'
-      },
+    const result = await graphql(
+      schema,
+      'subscription { protectedObject { unprotected } }',
+      null,
       context
     );
 
@@ -343,37 +329,40 @@ describe('Authentication', () => {
 
   // Unprotected input
   it('should succeed executing an unprotected query with an unprotected input when unauthenticated', async () => {
-    const result = await server.executeOperation({
-      query: 'query { unprotectedInput(data: { unprotected: "" }) }'
-    });
+    const result = await graphql(
+      schema,
+      'query { unprotectedInput(data: { unprotected: "" }) }'
+    );
 
     expect(result.errors).toBeUndefined();
     expect(result.data?.unprotectedInput).toBeDefined();
   });
 
   it('should succeed executing an unprotected mutation with an unprotected input when unauthenticated', async () => {
-    const result = await server.executeOperation({
-      query: 'mutation { unprotectedInput(data: { unprotected: "" }) }'
-    });
+    const result = await graphql(
+      schema,
+      'mutation { unprotectedInput(data: { unprotected: "" }) }'
+    );
 
     expect(result.errors).toBeUndefined();
     expect(result.data?.unprotectedInput).toBeDefined();
   });
 
   it('should succeed executing an unprotected subscription with an unprotected input when unauthenticated', async () => {
-    const result = await server.executeOperation({
-      query: 'subscription { unprotectedInput(data: { unprotected: "" }) }'
-    });
+    const result = await graphql(
+      schema,
+      'subscription { unprotectedInput(data: { unprotected: "" }) }'
+    );
 
     expect(result.errors).toBeUndefined();
     expect(result.data?.unprotectedInput).toBeDefined();
   });
 
   it('should succeed executing an unprotected query with an unprotected input when authenticated', async () => {
-    const result = await server.executeOperation(
-      {
-        query: 'query { unprotectedInput(data: { unprotected: "" }) }'
-      },
+    const result = await graphql(
+      schema,
+      'query { unprotectedInput(data: { unprotected: "" }) }',
+      null,
       context
     );
 
@@ -382,10 +371,10 @@ describe('Authentication', () => {
   });
 
   it('should succeed executing an unprotected mutation with an unprotected input when authenticated', async () => {
-    const result = await server.executeOperation(
-      {
-        query: 'mutation { unprotectedInput(data: { unprotected: "" }) }'
-      },
+    const result = await graphql(
+      schema,
+      'mutation { unprotectedInput(data: { unprotected: "" }) }',
+      null,
       context
     );
 
@@ -394,10 +383,10 @@ describe('Authentication', () => {
   });
 
   it('should succeed executing an unprotected subscription with an unprotected input when authenticated', async () => {
-    const result = await server.executeOperation(
-      {
-        query: 'subscription { unprotectedInput(data: { unprotected: "" }) }'
-      },
+    const result = await graphql(
+      schema,
+      'subscription { unprotectedInput(data: { unprotected: "" }) }',
+      null,
       context
     );
 
