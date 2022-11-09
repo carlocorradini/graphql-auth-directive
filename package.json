@@ -52,7 +52,7 @@
     "test:watch": "npm run test -- --watch"
   },
   "dependencies": {
-    "@graphql-tools/utils": "^8.12.0"
+    "@graphql-tools/utils": "^9.1.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.1.2",
