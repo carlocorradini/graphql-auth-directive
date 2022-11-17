@@ -1,12 +1,12 @@
-name: "Bug 🐛"
+name: Bug 🐛
 description: Create a new ticket for a bug 🐛.
-title: "🐛 [BUG] - <title>"
-labels: ["bug 🐛"]
+title: 🐛 [BUG] - <title>
+labels: [bug 🐛]
 body:
   - type: textarea
     id: description
     attributes:
-      label: "Description"
+      label: Description
       description: Please enter an explicit description of your issue.
       placeholder: Short and explicit description of your incident...
     validations:
@@ -14,7 +14,7 @@ body:
   - type: input
     id: reprod-url
     attributes:
-      label: "Reproduction URL"
+      label: Reproduction URL
       description: Please enter your GitHub URL to provide a reproduction of the issue.
       placeholder: ex. https://github.com/USERNAME/REPOSITORY
     validations:
@@ -22,7 +22,7 @@ body:
   - type: textarea
     id: reprod
     attributes:
-      label: "Reproduction steps"
+      label: Reproduction steps
       description: Please enter an explicit description of how to reproduce the issue.
       value: |
         1. Go to '...'
@@ -34,7 +34,7 @@ body:
   - type: textarea
     id: logs
     attributes:
-      label: "Logs"
+      label: Logs
       description: Please copy and paste any relevant log output.
       render: sh
     validations:
@@ -42,7 +42,7 @@ body:
   - type: dropdown
     id: os
     attributes:
-      label: "OS"
+      label: OS
       description: What is the impacted environment?
       multiple: true
       options:
