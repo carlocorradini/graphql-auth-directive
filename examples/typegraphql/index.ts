@@ -45,7 +45,8 @@ registerEnumType(UserPermissions, { name: 'UserPermission' });
 
 // Build schema
 const { typeDefs, resolvers } = buildTypeDefsAndResolversSync({
-  resolvers: [UserResolver, PostResolver]
+  resolvers: [UserResolver, PostResolver],
+  validate: { forbidUnknownValues: false }
 });
 const executableSchema = makeExecutableSchema({
   typeDefs: [authDirective.typeDefs, typeDefs],
