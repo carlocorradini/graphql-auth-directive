@@ -8,7 +8,7 @@
   "parserOptions": {
     "project": [
       "tsconfig.json",
-      "tsconfig.test.json",
+      "tests/tsconfig.json",
       "examples/tsconfig.json"
     ],
     "ecmaVersion": "latest",
@@ -23,7 +23,7 @@
         "alwaysTryTypes": true,
         "project": [
           "tsconfig.json",
-          "tsconfig.test.json",
+          "tests/tsconfig.json",
           "examples/tsconfig.json"
         ]
       }

@@ -36,6 +36,6 @@ export default <JestConfigWithTsJest>{
   collectCoverageFrom: ['<rootDir>/src/**/*.ts', '!<rootDir>/src/**/*.d.ts'],
   moduleNameMapper: pathsToModuleNameMapper(tsconfig.compilerOptions.paths),
   transform: {
-    '^.+\\.tsx?$': ['ts-jest', { tsconfig: './tsconfig.test.json' }]
+    '^.+\\.tsx?$': ['ts-jest', { tsconfig: './tests/tsconfig.json' }]
   }
 };

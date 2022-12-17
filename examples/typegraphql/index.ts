@@ -23,8 +23,8 @@
  */
 
 import 'reflect-metadata';
-import { makeExecutableSchema } from '@graphql-tools/schema';
-import { buildTypeDefsAndResolversSync, registerEnumType } from 'type-graphql';
+import { mergeSchemas } from '@graphql-tools/schema';
+import { buildSchemaSync, registerEnumType } from 'type-graphql';
 import { buildAuthDirective, defaultAuthFn } from '../../src';
 import { Context, UserRoles, UserPermissions, main } from '../__commons';
 import { UserResolver } from './UserResolver';
@@ -43,16 +43,16 @@ registerEnumType(UserRoles, { name: 'UserRoles' });
 // Register UserPermissions enum
 registerEnumType(UserPermissions, { name: 'UserPermissions' });
 
-// Build schema
-const { typeDefs, resolvers } = buildTypeDefsAndResolversSync({
+// Build Schema
+const schemaSimple = buildSchemaSync({
   resolvers: [UserResolver, PostResolver],
   validate: { forbidUnknownValues: false }
 });
-const executableSchema = makeExecutableSchema({
-  typeDefs: [authDirective.typeDefs, typeDefs],
-  resolvers
+const schemaMerged = mergeSchemas({
+  schemas: [schemaSimple],
+  typeDefs: [authDirective.typeDefs]
 });
-const schema = authDirective.transformer(executableSchema);
+const schema = authDirective.transformer(schemaMerged);
 
 // Main
 main(schema);

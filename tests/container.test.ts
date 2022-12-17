@@ -24,7 +24,8 @@
 
 /* eslint-disable max-classes-per-file */
 
-import { graphql } from 'graphql';
+import { execute } from 'graphql';
+import gql from 'graphql-tag';
 import { Container, Inject, Service } from 'typedi';
 import {
   AuthData,
@@ -81,12 +82,19 @@ describe('Container', () => {
 
   it('should use default container to instantiate auth class', async () => {
     const schema = buildSchema({ auth: Auth });
-    const result = await graphql(
+    const result = await execute({
       schema,
-      'query { protected { id, roles, permissions } }',
-      null,
-      context
-    );
+      document: gql`
+        query {
+          protected {
+            id
+            roles
+            permissions
+          }
+        }
+      `,
+      contextValue: context
+    });
 
     expect(result.errors).toBeUndefined();
     expect(result.data?.protected).toMatchObject(user);
@@ -94,12 +102,19 @@ describe('Container', () => {
 
   it('should use provided container to load auth class', async () => {
     const schema = buildSchema({ auth: AuthService, container: Container });
-    const result = await graphql(
+    const result = await execute({
       schema,
-      'query { protected { id, roles, permissions } }',
-      null,
-      context
-    );
+      document: gql`
+        query {
+          protected {
+            id
+            roles
+            permissions
+          }
+        }
+      `,
+      contextValue: context
+    });
 
     expect(result.errors).toBeUndefined();
     expect(result.data?.protected).toMatchObject(user);
@@ -114,12 +129,19 @@ describe('Container', () => {
       }
     };
     const schema = buildSchema({ auth: AuthService, container });
-    const result = await graphql(
+    const result = await execute({
       schema,
-      'query { protected { id, roles, permissions } }',
-      null,
-      context
-    );
+      document: gql`
+        query {
+          protected {
+            id
+            roles
+            permissions
+          }
+        }
+      `,
+      contextValue: context
+    });
 
     expect(result.errors).toBeUndefined();
     expect(result.data?.protected).toMatchObject(user);
@@ -139,12 +161,19 @@ describe('Container', () => {
       auth: AuthService,
       container
     });
-    const result = await graphql(
+    const result = await execute({
       schema,
-      'query { protected { id, roles, permissions } }',
-      null,
-      context
-    );
+      document: gql`
+        query {
+          protected {
+            id
+            roles
+            permissions
+          }
+        }
+      `,
+      contextValue: context
+    });
 
     expect(result.errors).toBeUndefined();
     expect(result.data?.protected).toMatchObject(user);
