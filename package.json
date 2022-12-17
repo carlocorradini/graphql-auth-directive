@@ -1,6 +1,6 @@
 {
   "name": "graphql-auth-directive",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "private": false,
   "description": "GraphQL @auth directive that protects resources from unauthenticated and unauthorized access",
   "keywords": [
