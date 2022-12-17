@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v0.5.0](https://github.com/carlocorradini/graphql-auth-directive/releases/tag/v0.4.1) - 2022-12-17
+
+### Changed
+
+- Minimum GraphQL version v16.6.0
+
 ## [v0.4.1](https://github.com/carlocorradini/graphql-auth-directive/releases/tag/v0.4.1) - 2022-10-18
 
 ### Fixed
