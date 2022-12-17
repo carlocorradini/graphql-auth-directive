@@ -41,7 +41,7 @@ const authDirective = buildAuthDirective<Context, UserRoles, UserPermissions>({
 // Register UserRoles enum
 registerEnumType(UserRoles, { name: 'UserRoles' });
 // Register UserPermissions enum
-registerEnumType(UserPermissions, { name: 'UserPermission' });
+registerEnumType(UserPermissions, { name: 'UserPermissions' });
 
 // Build schema
 const { typeDefs, resolvers } = buildTypeDefsAndResolversSync({
