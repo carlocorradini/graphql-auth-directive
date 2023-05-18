@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [14.x, 16.x]
+        node-version: [14.x, 16.x, 18.x]
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -50,10 +50,10 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - name: Setup Node.js 16.x
+      - name: Setup Node.js 18.x
         uses: actions/setup-node@v3
         with:
-          node-version: '16.x'
+          node-version: '18.x'
       - name: Install dependencies
         run: npm ci
       - name: Test
@@ -87,13 +87,19 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Setup Node.js 16.x
+      - name: Setup Node.js 18.x
         uses: actions/setup-node@v3
         with:
-          node-version: '16.x'
+          node-version: '18.x'
           registry-url: 'https://registry.npmjs.org'
+      - name: Install latest npm
+        run: |
+          npm install -g npm@latest
       - name: Install dependencies
         run: npm ci
+      - name: Prepare package
+        run: |
+          npm run prepublishOnly
       - name: Build Changelog
         id: changelog
         uses: mikepenz/release-changelog-builder-action@v2
