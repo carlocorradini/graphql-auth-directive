@@ -103,7 +103,7 @@
     "graphql": "^16.6.0"
   },
   "optionalDependencies": {
-    "fsevents": "^2.3.2"
+    "fsevents": "^2.3.3"
   },
   "engines": {
     "node": ">= 14"
